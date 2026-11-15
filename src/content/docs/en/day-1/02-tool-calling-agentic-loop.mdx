@@ -1,0 +1,55 @@
+---
+title: "2. Tool Calling & the Agentic Loop"
+description: How a text model gets hands, and the loop that turns single calls into autonomous work.
+---
+
+import AgentLoop from '../../../../components/AgentLoop.astro';
+
+## Tool calling
+
+A model only produces text. **Tool calling** is a protocol: you describe available tools (name, purpose, input schema); the model may answer with a *structured request* such as "call `read_file` with `path=src/invoice.ts`". **Your program** executes it and returns the result to the model. The model never touches your system directly.
+
+```text
+1. You   -> model : task + tool definitions
+2. Model -> you   : "call read_file(path='src/invoice.ts')"
+3. You   : run it (with permission checks!)
+4. You   -> model : tool result
+5. Model : next tool call, or final answer
+```
+
+## The agentic loop
+
+<AgentLoop lang="en" />
+
+The loop repeats until the model gives a final answer or something stops it (step limit, budget, timeout, human).
+
+```text
+while not done and budget_left:
+    response = model(messages, tools)
+    if response.is_final: done = True
+    else:
+        result = run_tool(response.tool_call)   # deterministic code
+        messages.append(result)
+```
+
+## What to notice
+
+- The **model proposes**; the **harness disposes**. Permissions, limits and logging live in code, not in the prompt.
+- Every iteration **adds to the context**, so long loops get slower, costlier and noisier.
+- In Claude Code, Anthropic describes the loop as roughly *gather context → take action → verify results*.
+
+## Stop conditions you must define
+
+| Condition | Example |
+|---|---|
+| Success | Tests green, acceptance criteria met |
+| Budget | Max steps / tokens / minutes |
+| Safety | Needs approval for a risky action |
+| Stuck | Same error three times |
+
+## Self-check
+
+1. Which part of the loop is code and which is the model?
+2. Why is "max steps" a safety feature and not just a cost control?
+
+Next: [Workflow vs Agent](../03-workflow-vs-agent/)

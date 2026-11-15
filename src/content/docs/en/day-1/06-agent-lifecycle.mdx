@@ -1,0 +1,38 @@
+---
+title: "6. Agent Lifecycle"
+description: From task intake to handoff — the stages a run goes through.
+---
+
+## Stages
+
+| Stage | What happens | Who controls it |
+|---|---|---|
+| 1. Intake | Task and acceptance criteria are defined | You |
+| 2. Initialise | Instructions loaded, environment prepared, branch created | Harness |
+| 3. Plan | Agent explores and proposes steps | Agent (you approve for risky work) |
+| 4. Execute | Loop of act and observe | Agent within permissions |
+| 5. Verify | Tests, lint, review against criteria | Harness + you |
+| 6. Review | Human or reviewer agent inspects the diff | You |
+| 7. Integrate | Merge via CI | Pipeline |
+| 8. Handoff | Progress and decisions saved for next session | Agent + harness |
+
+## Flow
+
+```text
+Intake -> Initialise -> Plan -> [ Execute <-> Observe ] -> Verify -> Review -> Integrate
+                                         ^                              |
+                                         +------ fix and retry <--------+
+                                                           Handoff -> next session
+```
+
+## Practical notes
+
+- **Intake quality sets the ceiling.** Vague tasks produce confident but wrong work.
+- **Verification is a stage, not a hope.** Define it before execution.
+- **Handoff is mandatory for long projects.** A fresh session knows nothing unless you saved it.
+
+## Self-check
+
+Write the lifecycle of "add a field to the Customer form" and mark the stage where you intervene.
+
+Next: [Plan, Act, Observe, Verify](../07-plan-act-observe-verify/)

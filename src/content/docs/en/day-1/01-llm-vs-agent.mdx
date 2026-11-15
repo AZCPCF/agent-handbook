@@ -1,0 +1,51 @@
+---
+title: "1. LLM vs AI Agent vs Agentic System"
+description: Three terms that are often mixed up, and a simple test to tell them apart.
+---
+
+## The short version
+
+- **LLM call** — one request in, one response out. The model has no hands: it cannot read your repo or run a test unless you paste the content in.
+- **AI Agent** — an LLM that, in a loop, **decides its own next step and chooses which tools to use**, using feedback from the environment (test results, file contents, errors) to continue.
+- **Agentic system** — the umbrella term. It covers both **workflows** (predefined code paths) and **agents** (model-directed paths).
+
+## The one-question test
+
+> **Who decides the next step: your code or the model?**
+
+| | LLM call | Workflow | Agent |
+|---|---|---|---|
+| Next step decided by | You (single step) | Your code | The model |
+| Uses tools | No | Yes, in fixed places | Yes, chosen dynamically |
+| Number of steps | 1 | Known in advance | Unknown in advance |
+| Predictability | Highest | High | Lower |
+| Cost / latency | Lowest | Medium | Highest |
+
+## Same task, three shapes
+
+Task: *"Something is wrong with invoice totals in the CRM."*
+
+1. **LLM call:** you paste a function; it explains the bug in prose.
+2. **Workflow:** every ticket tagged `bug` → code classifies it → LLM summarises → code posts a comment.
+3. **Agent:** it searches the repo, reproduces the bug with a failing test, edits code, re-runs tests, and stops when green.
+
+## Why this distinction matters
+
+Agents buy flexibility with **cost, latency and risk**. Most of engineering with agents is deciding *where* flexibility is worth that price.
+
+:::tip[Rule of thumb]
+Use the simplest shape that solves the problem. Move to an agent only when the number of steps cannot be known in advance.
+:::
+
+## Common mistakes
+
+- Calling every LLM feature an "agent".
+- Giving an agent a task that is really a fixed pipeline.
+- Assuming that a chat window equals an agent. Chat is an interface; agent is an architecture.
+
+## Self-check
+
+1. Which of your daily tools are LLM calls, workflows, agents?
+2. For "generate release notes from merged PRs", which shape fits best and why?
+
+Next: [Tool Calling & the Agentic Loop](../02-tool-calling-agentic-loop/)

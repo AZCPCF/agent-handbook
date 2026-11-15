@@ -1,0 +1,46 @@
+---
+title: "3. Workflow vs Agent"
+description: Predefined paths versus model-directed paths, and the five classic workflow patterns.
+---
+
+## Definitions
+
+- **Workflow:** LLMs and tools orchestrated through **predefined code paths**.
+- **Agent:** the LLM **dynamically directs its own process and tool use**.
+
+Neither is "better". They sit on a spectrum from fully scripted to fully autonomous.
+
+## Five workflow patterns
+
+| Pattern | Idea | Software example |
+|---|---|---|
+| **Prompt chaining** | Fixed sequence; each step feeds the next | Draft spec → check against rules → write code |
+| **Routing** | Classify input, send to a specialised path | Bug vs feature vs question tickets |
+| **Parallelization** | Run independent parts at once, or vote | Review one PR for security and style simultaneously |
+| **Orchestrator-workers** | A model splits work dynamically, workers execute | Multi-file change where files are not known upfront |
+| **Evaluator-optimizer** | One generates, another critiques, loop | Generate code, review, refine |
+
+## Decision matrix
+
+| Question | If yes → |
+|---|---|
+| Are the steps known in advance? | Workflow |
+| Must the result be reproducible and auditable? | Workflow |
+| Is the number of steps unpredictable? | Agent |
+| Is the environment feedback essential (tests, errors)? | Agent |
+| Is a mistake expensive or irreversible? | Workflow + human approval |
+
+## Hybrid is the norm
+
+Real systems are **deterministic skeletons with agentic cells**: code creates the branch, runs CI and requires approval; the agent works *inside* one step (e.g. "fix the failing test").
+
+:::caution
+Frameworks hide prompts and responses behind abstractions. Start with direct API calls or a simple harness; add layers only when you can explain what they do.
+:::
+
+## Self-check
+
+1. Redraw a ticket-to-PR process: which boxes are workflow, which are agent?
+2. Why is "evaluator-optimizer" still a workflow?
+
+Next: [Agent Runtime & Harness](../04-runtime-harness/)

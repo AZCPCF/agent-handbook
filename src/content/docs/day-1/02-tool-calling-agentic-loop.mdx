@@ -1,0 +1,55 @@
+---
+title: "۲. Tool Calling و Agentic Loop"
+description: مدل متنی چطور دست پیدا می‌کند و حلقه‌ای که کارهای تکی را به کار خودمختار تبدیل می‌کند.
+---
+
+import AgentLoop from '../../../components/AgentLoop.astro';
+
+## Tool Calling
+
+مدل فقط متن تولید می‌کند. **Tool Calling** یک پروتکل است: ابزارهای موجود را توصیف می‌کنی (نام، هدف، Schema ورودی)؛ مدل می‌تواند با یک *درخواست ساختاریافته* پاسخ بدهد، مثلاً «`read_file` را با `path=src/invoice.ts` صدا بزن». **برنامه تو** آن را اجرا می‌کند و نتیجه را به مدل برمی‌گرداند. مدل هرگز مستقیم به سیستم تو دست نمی‌زند.
+
+```text
+1. You   -> model : task + tool definitions
+2. Model -> you   : "call read_file(path='src/invoice.ts')"
+3. You   : run it (with permission checks!)
+4. You   -> model : tool result
+5. Model : next tool call, or final answer
+```
+
+## Agentic Loop
+
+<AgentLoop lang="fa" />
+
+حلقه تکرار می‌شود تا مدل پاسخ نهایی بدهد یا چیزی آن را متوقف کند (سقف گام، بودجه، Timeout یا انسان).
+
+```text
+while not done and budget_left:
+    response = model(messages, tools)
+    if response.is_final: done = True
+    else:
+        result = run_tool(response.tool_call)   # deterministic code
+        messages.append(result)
+```
+
+## نکته‌ها
+
+- **مدل پیشنهاد می‌دهد؛ Harness تصمیم می‌گیرد.** مجوزها، محدودیت‌ها و لاگ در کد هستند، نه در Prompt.
+- هر تکرار **به Context اضافه می‌کند**؛ پس حلقه‌های طولانی کندتر، گران‌تر و پرنویزتر می‌شوند.
+- Anthropic حلقه Claude Code را تقریباً این‌گونه توصیف می‌کند: *جمع‌آوری Context ← انجام اقدام ← تأیید نتیجه*.
+
+## شرایط توقف که باید تعریف کنی
+
+| شرط | مثال |
+|---|---|
+| موفقیت | تست‌ها سبز، معیارهای پذیرش برآورده |
+| بودجه | حداکثر گام / توکن / دقیقه |
+| ایمنی | اقدام پرریسک نیاز به تأیید دارد |
+| گیر کردن | سه بار همان خطا |
+
+## خودآزمایی
+
+1. کدام بخش حلقه کد است و کدام مدل؟
+2. چرا «حداکثر گام» یک ویژگی ایمنی است و فقط کنترل هزینه نیست؟
+
+بعدی: [Workflow در برابر Agent](../03-workflow-vs-agent/)

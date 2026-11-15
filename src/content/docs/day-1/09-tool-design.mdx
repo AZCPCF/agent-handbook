@@ -1,0 +1,45 @@
+---
+title: "۹. طراحی ابزار و قرارداد ابزارها"
+description: ابزارها رابط یک مدل هستند؛ به‌اندازه یک API برای انسان‌ها با دقت طراحی‌شان کن.
+---
+
+## ابزار، رابط برای یک مدل است
+
+ابزار یک **قرارداد** است: نام، توضیح، Schema ورودی، قالب خروجی و رفتار خطا. مدل آن را مثل مستندات می‌خواند، پس **ابهام تبدیل به اشتباه می‌شود**.
+
+## اصول طراحی
+
+1. **یک هدف روشن** برای هر ابزار؛ از ابزارهای هم‌پوشان بپرهیز.
+2. **نام و توضیح گویا** — بگو کی استفاده شود و کی نه.
+3. **Schema ورودی سخت‌گیر** — نوع، Enum، فیلدهای اجباری، مثال.
+4. **سخت برای سوءاستفاده** — مسیر مطلق، شناسه صریح، پرچم تأیید برای کارهای خطرناک.
+5. **فقط چیز مفید را برگردان** — خروجی مختصر و معنادار، نه خروجی خام حجیم.
+6. **خطای عملی** — بگو *چه چیزی خراب شد و چه چیزی را امتحان کند*.
+7. **Least Privilege** — ابزار خواندن نباید بتواند بنویسد.
+
+## خوب در برابر بد
+
+| جنبه | ضعیف | قوی |
+|---|---|---|
+| نام | `run` | `run_tests` |
+| ورودی | `command` متن آزاد | `{ suite: enum, filter?: string }` |
+| خروجی | ۵۰۰۰ خط لاگ | تعداد موفق/ناموفق + ۳ شکست اول |
+| خطا | `Error 500` | `Invalid suite "x". Valid: unit, e2e` |
+
+## الگوی قرارداد
+
+```text
+name:        search_customers
+purpose:     Find customers by name or email (read-only)
+when to use: Looking up a customer before editing a record
+input:       { query: string (min 2), limit?: integer (1-50, default 10) }
+output:      [{ id, name, email, status }]  (max limit items)
+errors:      QUERY_TOO_SHORT, RATE_LIMITED (retry_after_seconds)
+side effects: none
+```
+
+## خودآزمایی
+
+یک ابزار مبهم مثل `database(query)` را به دو ابزار امن بازنویسی کن.
+
+بعدی: [Error Handling، Timeout، Retry و Idempotency](../10-tool-reliability/)

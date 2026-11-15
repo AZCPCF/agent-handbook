@@ -1,0 +1,43 @@
+---
+title: "7. Planning, Acting, Observing, Verifying"
+description: The four verbs inside every iteration and how to make each one reliable.
+---
+
+## The four verbs
+
+| Verb | Meaning | Make it reliable by |
+|---|---|---|
+| **Plan** | Decide the next step or a multi-step approach | Plan mode, explicit steps, small tasks |
+| **Act** | Call a tool | Clear tool contracts, least privilege |
+| **Observe** | Read the result | Concise, structured tool output |
+| **Verify** | Check against ground truth | Tests, type-checks, acceptance criteria |
+
+## Ground truth is the secret
+
+An agent is only as good as the **feedback it can trust**. Compiler errors, failing tests and linters are objective. "Looks right to me" from the same model is not.
+
+:::caution
+Passing unit tests does not prove the feature works for a real user. Add end-to-end checks and independent review for important features.
+:::
+
+## Plan-first vs act-first
+
+| Situation | Better approach |
+|---|---|
+| Small, well-understood change | Act directly |
+| Touches many files or architecture | Plan, review, then act |
+| Irreversible or sensitive | Plan + human approval |
+
+## Self-verification ladder (weakest → strongest)
+
+1. Agent re-reads its own code.
+2. Type-check and lint.
+3. Unit tests.
+4. Integration and end-to-end tests.
+5. Independent reviewer (another agent or a human).
+
+## Self-check
+
+For your CRM, what is the strongest verification you can automate for "invoice total is correct"?
+
+Next: [Limits & Failure Modes](../08-limits-failure-modes/)

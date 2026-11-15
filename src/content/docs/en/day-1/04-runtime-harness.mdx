@@ -1,0 +1,49 @@
+---
+title: "4. Agent Runtime & Harness Architecture"
+description: The software around the model that makes it an agent.
+---
+
+## Model vs harness
+
+> **Agent = Model + Harness**
+
+The **model** reasons. The **harness** (runtime) is everything else: it builds the prompt, exposes tools, executes tool calls, enforces permissions, manages context, stores state and decides when to stop. Anthropic describes Claude Code as a model plus tools plus an *agentic harness* that manages context and tool execution.
+
+## What a harness does
+
+| Responsibility | Examples |
+|---|---|
+| Tool execution | Run shell, edit files, call APIs |
+| Permissions | Ask before deleting, block production access |
+| Context management | Load instructions, compact old history |
+| State & memory | Task lists, progress files, git history |
+| Safety limits | Step caps, timeouts, sandboxing |
+| Observability | Logs, traces, token usage |
+| Extensibility | Hooks, skills, MCP servers, subagents |
+
+## Why harness quality matters
+
+Two products using the *same* model can behave very differently because their harnesses differ. For long projects, losing coherence across context windows is a harness problem, not only a model problem — which is why Day 7 is about harness design.
+
+## Mapping to Claude Code
+
+| Generic concept | Claude Code |
+|---|---|
+| Project instructions | `CLAUDE.md` |
+| Reusable workflows | Skills |
+| Tool integration | MCP |
+| Lifecycle automation | Hooks |
+| Delegation | Subagents |
+| Permissions | Settings / permission rules |
+| Isolation | Sandbox |
+
+:::note
+Learn the *concept* first; names differ between tools (Claude Code, Codex, OpenCode).
+:::
+
+## Self-check
+
+1. Which harness feature would have prevented your last "agent did something I did not expect"?
+2. What belongs in the prompt, and what must be enforced in the harness?
+
+Next: [Model / Tools / Context / State / Environment](../05-five-building-blocks/)

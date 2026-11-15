@@ -1,0 +1,56 @@
+---
+title: "12. Practical Exercise — agent-architecture.md"
+description: Design an agent architecture for one concrete CRM task and decide which steps are agent-owned.
+---
+
+## Task
+
+> **Fix the bug "invoice total is wrong when a discount is applied" in the CRM.**
+
+Deliverable: a file named `agent-architecture.md` with a diagram and an ownership table.
+
+## Reference answer (use as a pattern, then do your own)
+
+```text
+[Ticket] -> (code) validate ticket template
+         -> (code) create branch + load CLAUDE.md
+         -> (agent) locate code, reproduce with failing test
+         -> (agent) propose fix        --[human approves plan if >3 files]-->
+         -> (agent) implement + re-run tests
+         -> (code) lint + typecheck + unit tests
+         -> (agent or human) code review against criteria
+         -> (code) CI
+         -> (human) merge
+```
+
+| Step | Owner | Why |
+|---|---|---|
+| Validate ticket | Code | Fixed rule |
+| Create branch, load instructions | Code | Repeatable, no judgment |
+| Find and reproduce bug | Agent | Unknown location, needs exploration |
+| Propose and implement fix | Agent | Judgment over unseen code |
+| Lint, typecheck, tests | Code | Objective ground truth |
+| Review | Agent + human | Independent check |
+| Migration or data change | Human approval | Irreversible |
+| Merge and deploy | Code + human | Production risk |
+
+## Your template
+
+```md
+# agent-architecture.md
+## Task
+## Diagram
+## Ownership table (step / owner / reason)
+## Tools the agent needs (with contracts)
+## Permissions (allowed / needs approval / forbidden)
+## Stop conditions
+## Failure modes and mitigations
+## Definition of done
+```
+
+## Done when
+
+- [ ] Every step has one owner and a reason
+- [ ] At least one verification step is code, not the agent
+- [ ] Irreversible actions are gated
+- [ ] You can explain the design in two minutes

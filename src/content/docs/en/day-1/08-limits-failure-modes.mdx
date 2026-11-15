@@ -1,0 +1,37 @@
+---
+title: "8. Agent Limits & Failure Modes"
+description: How agents fail in practice and what you do about each failure.
+---
+
+## Failure catalogue
+
+| Failure mode | What it looks like | Mitigation |
+|---|---|---|
+| **Hallucinated facts or APIs** | Calls functions that do not exist | Type-check, run code, point to docs |
+| **Premature "done"** | Declares victory without testing | Mandatory verification step |
+| **Context loss** | Forgets earlier decisions | Progress files, short tasks, compaction |
+| **Context pollution** | Irrelevant material degrades focus | Load files just-in-time |
+| **Scope creep** | Refactors unrelated code | Narrow task, diff review |
+| **Looping** | Retries the same failing action | Step limits, stuck detection |
+| **Tool misuse** | Wrong arguments, destructive commands | Schemas, permission rules |
+| **Prompt injection** | Malicious text in a file or web page steers the agent | Treat tool output as untrusted, sandbox |
+| **Overconfidence** | Plausible but wrong design | Review, tests, second opinion |
+| **Cost blow-up** | Many steps, large contexts | Budgets, monitoring |
+
+## Principle
+
+> Assume the agent **will** make mistakes. Design so that mistakes are **cheap, visible and reversible**.
+
+## Reversible vs irreversible
+
+| Reversible (allow) | Irreversible (gate) |
+|---|---|
+| Edit files in a branch | Delete data |
+| Run tests | Production migrations |
+| Create commits | Deploy, force-push |
+
+## Self-check
+
+Pick three failure modes and decide which one is most dangerous for CRM/ERP data.
+
+Next: [Tool Design & Contracts](../09-tool-design/)

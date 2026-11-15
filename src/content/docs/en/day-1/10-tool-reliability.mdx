@@ -1,0 +1,64 @@
+---
+title: "10. Error Handling, Timeout, Retry & Idempotency"
+description: Make tools safe when networks fail, models retry, and things run twice.
+---
+
+## Why this matters
+
+Agents **retry**, networks **fail**, and a model may call the same tool twice. Tools must stay correct in all of those cases.
+
+## Four concepts
+
+| Concept | Meaning | Rule |
+|---|---|---|
+| **Error handling** | Return structured, actionable errors | Never swallow errors silently |
+| **Timeout** | Upper bound on waiting | Every external call has one |
+| **Retry** | Try again after transient failure | Only transient errors, with backoff and a cap |
+| **Idempotency** | Same request twice = same effect once | Required for any write |
+
+## Error taxonomy
+
+| Type | Example | Retry? |
+|---|---|---|
+| Transient | Network blip, 503, rate limit | Yes, with backoff |
+| Client / input | Invalid argument | No — fix the input |
+| Permission | Forbidden | No — escalate |
+| Permanent | Resource missing | No |
+
+## Idempotency key pattern
+
+```ts
+async function createInvoice(input: InvoiceInput, idempotencyKey: string) {
+  const existing = await db.invoices.findByKey(idempotencyKey);
+  if (existing) return existing;              // second call returns same result
+  return db.invoices.create({ ...input, idempotencyKey });
+}
+```
+
+## Retry with backoff
+
+```ts
+async function withRetry<T>(fn: () => Promise<T>, max = 3) {
+  for (let attempt = 1; ; attempt++) {
+    try { return await fn(); }
+    catch (e) {
+      if (!isTransient(e) || attempt >= max) throw e;
+      await sleep(2 ** attempt * 200 + Math.random() * 100); // exponential + jitter
+    }
+  }
+}
+```
+
+## Checklist
+
+- [ ] Timeout on every external call
+- [ ] Errors classified and returned in a fixed shape
+- [ ] Writes accept an idempotency key
+- [ ] Retries are capped and only for transient errors
+- [ ] Destructive actions require confirmation or approval
+
+## Self-check
+
+What happens if an agent calls `send_invoice_email` twice? Redesign it to be safe.
+
+Next: [Comparison Cheat-Sheet](../11-comparison-cheatsheet/)

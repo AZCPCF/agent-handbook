@@ -1,0 +1,49 @@
+---
+title: "۴. Agent Runtime و معماری Harness"
+description: نرم‌افزاری که دور مدل را گرفته و آن را به Agent تبدیل می‌کند.
+---
+
+## مدل در برابر Harness
+
+> **Agent = Model + Harness**
+
+**مدل** استدلال می‌کند. **Harness** (Runtime) همه چیز دیگر است: Prompt را می‌سازد، ابزارها را در اختیار می‌گذارد، فراخوانی ابزار را اجرا می‌کند، مجوزها را اعمال می‌کند، Context را مدیریت می‌کند، State را ذخیره می‌کند و تصمیم می‌گیرد کی متوقف شود. Anthropic، Claude Code را ترکیبی از مدل، ابزارها و یک *Agentic Harness* توصیف می‌کند که Context و اجرای ابزار را مدیریت می‌کند.
+
+## Harness چه کار می‌کند؟
+
+| مسئولیت | مثال |
+|---|---|
+| اجرای ابزار | اجرای Shell، ویرایش فایل، فراخوانی API |
+| مجوزها | پرسیدن قبل از حذف، بستن دسترسی Production |
+| مدیریت Context | بارگذاری دستورالعمل‌ها، فشرده‌سازی تاریخچه قدیمی |
+| State و حافظه | لیست تسک‌ها، فایل پیشرفت، تاریخچه Git |
+| محدودیت‌های ایمنی | سقف گام، Timeout، Sandbox |
+| Observability | لاگ، Trace، مصرف توکن |
+| قابلیت توسعه | Hooks، Skills، MCP، Subagents |
+
+## چرا کیفیت Harness مهم است؟
+
+دو محصول با *یک* مدل می‌توانند کاملاً متفاوت رفتار کنند چون Harness متفاوت دارند. برای پروژه‌های طولانی، از دست رفتن انسجام بین Context Windowها فقط مشکل مدل نیست، مشکل Harness هم هست؛ برای همین روز هفتم درباره طراحی Harness است.
+
+## نگاشت به Claude Code
+
+| مفهوم عمومی | Claude Code |
+|---|---|
+| Project Instructions | `CLAUDE.md` |
+| Reusable Workflows | Skills |
+| Tool Integration | MCP |
+| Lifecycle Automation | Hooks |
+| Delegation | Subagents |
+| Permissions | Settings / Permission Rules |
+| Isolation | Sandbox |
+
+:::note
+اول *مفهوم* را یاد بگیر؛ نام‌ها بین ابزارها (Claude Code، Codex، OpenCode) فرق می‌کند.
+:::
+
+## خودآزمایی
+
+1. کدام قابلیت Harness جلوی آخرین «Agent کاری کرد که انتظار نداشتم» را می‌گرفت؟
+2. چه چیزی باید در Prompt باشد و چه چیزی باید در Harness اعمال شود؟
+
+بعدی: [Model / Tools / Context / State / Environment](../05-five-building-blocks/)

@@ -1,0 +1,20 @@
+{
+  "name": "agent-engineering-handbook",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/starlight": "latest",
+    "@fontsource/vazirmatn": "latest",
+    "astro": "latest",
+    "sharp": "latest"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["sharp", "esbuild"]
+  }
+}

@@ -1,0 +1,64 @@
+---
+title: "۱۰. Error Handling، Timeout، Retry و Idempotency"
+description: ابزارها را وقتی شبکه خراب می‌شود، مدل دوباره تلاش می‌کند و چیزها دوبار اجرا می‌شوند امن کن.
+---
+
+## چرا مهم است؟
+
+Agentها **Retry** می‌کنند، شبکه **خراب** می‌شود و مدل ممکن است یک ابزار را دو بار صدا بزند. ابزارها باید در همه این حالت‌ها درست بمانند.
+
+## چهار مفهوم
+
+| مفهوم | معنی | قاعده |
+|---|---|---|
+| **Error Handling** | برگرداندن خطای ساختاریافته و عملی | هرگز خطا را بی‌صدا نبلع |
+| **Timeout** | سقف انتظار | هر فراخوانی خارجی یکی دارد |
+| **Retry** | تلاش دوباره بعد از خطای گذرا | فقط خطای گذرا، با Backoff و سقف |
+| **Idempotency** | دو بار همان درخواست = یک بار اثر | برای هر نوشتن الزامی است |
+
+## دسته‌بندی خطاها
+
+| نوع | مثال | Retry؟ |
+|---|---|---|
+| گذرا (Transient) | قطعی لحظه‌ای شبکه، 503، Rate Limit | بله، با Backoff |
+| ورودی / کلاینت | آرگومان نامعتبر | خیر — ورودی را اصلاح کن |
+| مجوز | Forbidden | خیر — Escalate کن |
+| دائمی | منبع وجود ندارد | خیر |
+
+## الگوی Idempotency Key
+
+```ts
+async function createInvoice(input: InvoiceInput, idempotencyKey: string) {
+  const existing = await db.invoices.findByKey(idempotencyKey);
+  if (existing) return existing;              // second call returns same result
+  return db.invoices.create({ ...input, idempotencyKey });
+}
+```
+
+## Retry با Backoff
+
+```ts
+async function withRetry<T>(fn: () => Promise<T>, max = 3) {
+  for (let attempt = 1; ; attempt++) {
+    try { return await fn(); }
+    catch (e) {
+      if (!isTransient(e) || attempt >= max) throw e;
+      await sleep(2 ** attempt * 200 + Math.random() * 100); // exponential + jitter
+    }
+  }
+}
+```
+
+## چک‌لیست
+
+- [ ] Timeout روی هر فراخوانی خارجی
+- [ ] خطاها دسته‌بندی و در یک قالب ثابت برگردانده می‌شوند
+- [ ] نوشتن‌ها Idempotency Key می‌گیرند
+- [ ] Retry سقف دارد و فقط برای خطای گذرا است
+- [ ] اقدام مخرب نیازمند تأیید است
+
+## خودآزمایی
+
+اگر Agent ابزار `send_invoice_email` را دو بار صدا بزند چه می‌شود؟ آن را امن بازطراحی کن.
+
+بعدی: [برگه مقایسه](../11-comparison-cheatsheet/)

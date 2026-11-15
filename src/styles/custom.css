@@ -1,0 +1,9 @@
+@import '@fontsource/vazirmatn/400.css';
+@import '@fontsource/vazirmatn/700.css';
+
+:root[lang='fa'] {
+  --sl-font: 'Vazirmatn', system-ui, sans-serif;
+}
+/* Code and diagrams always stay left-to-right */
+pre, code, .ltr { direction: ltr; unicode-bidi: plaintext; }
+.ltr { text-align: left; }

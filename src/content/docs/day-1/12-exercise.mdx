@@ -1,0 +1,56 @@
+---
+title: "۱۲. تمرین عملی — agent-architecture.md"
+description: معماری Agent را برای یک تسک مشخص CRM طراحی کن و تعیین کن کدام گام‌ها با Agent باشند.
+---
+
+## تسک
+
+> **باگ «مجموع فاکتور هنگام اعمال تخفیف اشتباه است» را در CRM رفع کن.**
+
+خروجی: فایلی به نام `agent-architecture.md` شامل دیاگرام و جدول مالکیت گام‌ها.
+
+## پاسخ مرجع (به‌عنوان الگو؛ بعد نسخه خودت را بساز)
+
+```text
+[Ticket] -> (code) validate ticket template
+         -> (code) create branch + load CLAUDE.md
+         -> (agent) locate code, reproduce with failing test
+         -> (agent) propose fix        --[human approves plan if >3 files]-->
+         -> (agent) implement + re-run tests
+         -> (code) lint + typecheck + unit tests
+         -> (agent or human) code review against criteria
+         -> (code) CI
+         -> (human) merge
+```
+
+| گام | مالک | دلیل |
+|---|---|---|
+| اعتبارسنجی تیکت | کد | قاعده ثابت |
+| ساخت Branch و بارگذاری دستورالعمل | کد | تکرارشونده، بدون قضاوت |
+| پیدا کردن و بازتولید باگ | Agent | مکان نامعلوم، نیازمند کاوش |
+| پیشنهاد و پیاده‌سازی رفع | Agent | قضاوت روی کد دیده‌نشده |
+| Lint، Typecheck، تست | کد | حقیقت مبنای عینی |
+| Review | Agent + انسان | بررسی مستقل |
+| Migration یا تغییر داده | تأیید انسانی | غیرقابل‌بازگشت |
+| Merge و Deploy | کد + انسان | ریسک Production |
+
+## قالب تو
+
+```md
+# agent-architecture.md
+## Task
+## Diagram
+## Ownership table (step / owner / reason)
+## Tools the agent needs (with contracts)
+## Permissions (allowed / needs approval / forbidden)
+## Stop conditions
+## Failure modes and mitigations
+## Definition of done
+```
+
+## وقتی تمام است که
+
+- [ ] هر گام یک مالک و یک دلیل دارد
+- [ ] حداقل یک گام اعتبارسنجی با کد است، نه Agent
+- [ ] اقدام‌های غیرقابل‌بازگشت Gate دارند
+- [ ] می‌توانی طراحی را در دو دقیقه توضیح بدهی

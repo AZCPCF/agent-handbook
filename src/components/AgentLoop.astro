@@ -1,0 +1,35 @@
+---
+const { lang = 'en' } = Astro.props;
+const t = lang === 'fa'
+  ? { task: 'تسک', model: 'مدل تصمیم می‌گیرد', tool: 'فراخوانی ابزار', obs: 'مشاهده نتیجه', done: 'پاسخ نهایی', loop: 'تکرار تا پایان / تأیید' }
+  : { task: 'Task', model: 'Model decides', tool: 'Tool call', obs: 'Observation', done: 'Final answer', loop: 'repeat until done / verified' };
+---
+<div class="ltr" style="max-width:640px;margin:1rem auto">
+<svg viewBox="0 0 620 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Agent loop" style="width:100%;height:auto;color:var(--sl-color-text)">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="currentColor" />
+    </marker>
+  </defs>
+  <g fill="none" stroke="currentColor" stroke-width="1.6">
+    <rect x="15" y="95" width="125" height="60" rx="10" />
+    <rect x="190" y="95" width="150" height="60" rx="10" />
+    <rect x="420" y="95" width="150" height="60" rx="10" />
+    <rect x="420" y="190" width="150" height="50" rx="10" />
+    <rect x="190" y="15" width="150" height="45" rx="10" />
+    <path d="M140,125 H190" marker-end="url(#arr)" />
+    <path d="M340,125 H420" marker-end="url(#arr)" />
+    <path d="M495,155 V190" marker-end="url(#arr)" />
+    <path d="M420,215 H265 V155" marker-end="url(#arr)" />
+    <path d="M265,95 V60" marker-end="url(#arr)" />
+  </g>
+  <g fill="currentColor" font-size="14" text-anchor="middle" font-family="sans-serif">
+    <text x="77" y="130">{t.task}</text>
+    <text x="265" y="130">{t.model}</text>
+    <text x="495" y="130">{t.tool}</text>
+    <text x="495" y="220">{t.obs}</text>
+    <text x="265" y="43">{t.done}</text>
+    <text x="345" y="240" font-size="12" opacity="0.75">{t.loop}</text>
+  </g>
+</svg>
+</div>

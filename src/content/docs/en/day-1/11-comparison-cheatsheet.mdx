@@ -1,0 +1,54 @@
+---
+title: "11. Comparison Cheat-Sheet"
+description: Day 1 in tables — use for review before the exercise.
+---
+
+## LLM vs Workflow vs Agent
+
+| | LLM call | Workflow | Agent |
+|---|---|---|---|
+| Control | You | Your code | The model |
+| Steps | 1 | Fixed | Dynamic |
+| Feedback loop | No | Limited | Core |
+| Best for | Transform text | Repeatable processes | Open-ended tasks |
+| Main risk | Wrong answer | Rigid | Cost, drift, unsafe actions |
+
+## Deterministic vs agentic: who should own a step?
+
+| Step is... | Owner |
+|---|---|
+| Fixed, repeatable, safety-critical | Code (workflow) |
+| Needs judgment over unknown code | Agent |
+| Irreversible | Code + human approval |
+| Verification | Code (tests, CI) first, agent second |
+
+## Five building blocks
+
+| Block | Temporary? | Where risk lives |
+|---|---|---|
+| Model | — | Reasoning errors |
+| Tools | No | Misuse |
+| Context | Yes | Pollution, loss |
+| State | No | Staleness |
+| Environment | No | Real damage |
+
+## Failure → mitigation
+
+| Failure | First defence |
+|---|---|
+| Hallucination | Run it |
+| Premature done | Verification stage |
+| Context loss | Progress file |
+| Injection | Treat outputs as untrusted |
+| Loop | Step limit |
+
+## Tool reliability
+
+| Need | Mechanism |
+|---|---|
+| Survive failures | Timeout + capped retry |
+| Safe duplicates | Idempotency key |
+| Debuggable | Structured errors |
+| Safe by default | Least privilege |
+
+Next: [Practical Exercise](../12-exercise/)

@@ -1,0 +1,45 @@
+---
+title: "9. Tool Design & Tool Contracts"
+description: Treat tools as an interface for the model — design them as carefully as an API for humans.
+---
+
+## Tools are an interface for a model
+
+A tool is a **contract**: name, description, input schema, output format and error behaviour. The model reads it like documentation, so **ambiguity becomes mistakes**.
+
+## Design principles
+
+1. **One clear purpose** per tool; avoid overlapping tools.
+2. **Descriptive names and docs** — say when to use it and when not to.
+3. **Strict input schema** — types, enums, required fields, examples.
+4. **Hard to misuse** — prefer absolute paths, explicit IDs, confirmation flags for danger.
+5. **Return only what is useful** — concise, meaningful output instead of raw dumps.
+6. **Actionable errors** — tell the model *what went wrong and what to try*.
+7. **Least privilege** — a read tool should not be able to write.
+
+## Good vs bad
+
+| Aspect | Weak | Strong |
+|---|---|---|
+| Name | `run` | `run_tests` |
+| Input | free-text `command` | `{ suite: enum, filter?: string }` |
+| Output | 5,000 lines of logs | pass/fail counts + first 3 failures |
+| Error | `Error 500` | `Invalid suite "x". Valid: unit, e2e` |
+
+## Contract template
+
+```text
+name:        search_customers
+purpose:     Find customers by name or email (read-only)
+when to use: Looking up a customer before editing a record
+input:       { query: string (min 2), limit?: integer (1-50, default 10) }
+output:      [{ id, name, email, status }]  (max limit items)
+errors:      QUERY_TOO_SHORT, RATE_LIMITED (retry_after_seconds)
+side effects: none
+```
+
+## Self-check
+
+Rewrite a vague tool such as `database(query)` into two safe tools.
+
+Next: [Errors, Timeouts, Retries, Idempotency](../10-tool-reliability/)

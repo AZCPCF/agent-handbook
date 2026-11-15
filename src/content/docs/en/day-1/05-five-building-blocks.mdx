@@ -1,0 +1,47 @@
+---
+title: "5. Model / Tools / Context / State / Environment"
+description: The five building blocks you can reason about in any agent system.
+---
+
+## The five blocks
+
+| Block | Question it answers | CRM example |
+|---|---|---|
+| **Model** | Who reasons? | Claude, with a chosen size and effort level |
+| **Tools** | What can it do? | read file, run tests, query staging DB |
+| **Context** | What does it see right now? | Task, instructions, relevant files, recent results |
+| **State** | What persists beyond this context? | Task list, progress notes, git commits |
+| **Environment** | Where do actions land? | Repo, terminal, containers, external APIs |
+
+## How they interact
+
+```text
+          +---------- Context (limited window) ----------+
+Model <-> |  instructions + task + tool results + history |
+  |       +-----------------------------------------------+
+  v
+Tools --> Environment (files, shell, DB, APIs)
+  |
+  +--> State (written outside the context, reloaded later)
+```
+
+## Key distinctions
+
+- **Context is temporary; state is durable.** Anything important must be written to state (files, git) or it disappears when the window fills.
+- **Environment is where risk lives.** Permissions belong here.
+- **Tools define the boundary of agency.** No tool, no action.
+
+## Debugging with the five blocks
+
+| Symptom | Suspect |
+|---|---|
+| Ignores a project rule | Context |
+| Repeats finished work next session | State |
+| Edits wrong files | Tools / Environment |
+| Reasons poorly | Model |
+
+## Self-check
+
+For one real bug an agent caused, which block failed?
+
+Next: [Agent Lifecycle](../06-agent-lifecycle/)
