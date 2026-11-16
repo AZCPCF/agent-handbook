@@ -1,0 +1,48 @@
+---
+title: "15. Practical Exercise — Context & Memory Structure"
+description: Design a documentation structure so an agent finds task-relevant info without reading everything.
+---
+
+## Task
+
+Design the context and memory structure for your CRM/ERP project. Deliverable: `context-memory-structure.md`.
+
+## Starter structure
+
+```text
+project/
+├── CLAUDE.md                # short: commands, architecture, hard rules, map
+├── AGENTS.md                # cross-tool instructions (or imported by CLAUDE.md)
+├── .claude/
+│   ├── rules/               # path-scoped rules (db, api, ui)
+│   └── skills/              # repeatable workflows
+├── docs/
+│   ├── architecture/
+│   ├── decisions/           # ADRs
+│   ├── domain/              # invoices, customers, roles ...
+│   └── workflows/
+├── specs/                   # one spec per feature
+└── tasks/
+    └── progress.md          # handoff note
+```
+
+## Routing table (put in CLAUDE.md)
+
+| If the task touches... | Read first |
+|---|---|
+| Invoices or pricing | docs/domain/invoices.md |
+| Database schema | docs/architecture/data.md, ADRs |
+| Auth and roles | docs/domain/roles.md |
+| A new feature | The matching file in specs/ |
+
+## Test your design
+
+Pick three tasks. For each, list **exactly** what the agent should load. If the answer is "everything", the structure failed.
+
+## Done when
+
+- [ ] `CLAUDE.md` is under about 60 lines
+- [ ] Each doc has a one-line purpose
+- [ ] A routing table exists
+- [ ] A progress/handoff template exists
+- [ ] Secrets and real customer data are excluded

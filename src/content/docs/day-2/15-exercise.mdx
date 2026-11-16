@@ -1,0 +1,48 @@
+---
+title: "۱۵. تمرین عملی — ساختار Context و Memory"
+description: ساختار مستندات را طوری طراحی کن که Agent بدون خواندن همه چیز، اطلاعات مرتبط با هر تسک را پیدا کند.
+---
+
+## تسک
+
+ساختار Context و Memory را برای پروژه CRM/ERP خودت طراحی کن. خروجی: فایل `context-memory-structure.md`.
+
+## ساختار پیشنهادی شروع
+
+```text
+project/
+├── CLAUDE.md                # short: commands, architecture, hard rules, map
+├── AGENTS.md                # cross-tool instructions (or imported by CLAUDE.md)
+├── .claude/
+│   ├── rules/               # path-scoped rules (db, api, ui)
+│   └── skills/              # repeatable workflows
+├── docs/
+│   ├── architecture/
+│   ├── decisions/           # ADRs
+│   ├── domain/              # invoices, customers, roles ...
+│   └── workflows/
+├── specs/                   # one spec per feature
+└── tasks/
+    └── progress.md          # handoff note
+```
+
+## جدول مسیریابی (در CLAUDE.md بگذار)
+
+| اگر تسک به این مربوط است... | اول این را بخوان |
+|---|---|
+| فاکتور یا قیمت‌گذاری | docs/domain/invoices.md |
+| اسکیمای دیتابیس | docs/architecture/data.md و ADRها |
+| احراز هویت و نقش‌ها | docs/domain/roles.md |
+| یک Feature جدید | فایل متناظر در specs/ |
+
+## طراحی‌ات را بیازما
+
+سه تسک انتخاب کن. برای هرکدام **دقیقاً** فهرست کن Agent چه چیزی باید بارگذاری کند. اگر جواب «همه چیز» بود، ساختار شکست خورده است.
+
+## وقتی تمام است که
+
+- [ ] `CLAUDE.md` حدود ۶۰ خط یا کمتر است
+- [ ] هر سند یک جمله هدف دارد
+- [ ] جدول مسیریابی وجود دارد
+- [ ] قالب Progress/Handoff وجود دارد
+- [ ] Secret و داده واقعی مشتری حذف شده‌اند

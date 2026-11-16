@@ -1,0 +1,42 @@
+---
+title: "10. Project Instructions & Path-scoped Rules"
+description: Writing short, useful instruction files and scoping rules to parts of the codebase.
+---
+
+## A good project instruction file
+
+| Include | Avoid |
+|---|---|
+| Build, test, lint commands | Long tutorials |
+| Architecture in a few lines | Things obvious from code |
+| Conventions that differ from defaults | Duplicated docs |
+| Hard "do not" rules with reasons | Dozens of vague rules |
+| Pointers to deeper docs | Copy-pasted specs |
+
+Keep it **short**. Every line is paid for on every session.
+
+## Example skeleton
+
+```md
+# CRM project
+## Commands
+- Test: pnpm test | Lint: pnpm lint | Typecheck: pnpm typecheck
+## Architecture
+- apps/web (Next.js), packages/db (schema + migrations)
+## Rules
+- Never edit existing migrations; add new ones (needs human approval)
+- No direct DB access to production
+## Where to look
+- Invoice rules: docs/domain/invoices.md
+- ADRs: docs/decisions/
+```
+
+## Path-scoped rules
+
+Rules that only matter for some files should load **only when those files are in play**, e.g. rules for `packages/db/**` only when touching the database layer. This keeps general context small. Exact file format and frontmatter depend on your tool; verify in its docs.
+
+## Self-check
+
+Write a 15-line instruction file for your CRM. Cut it to 10.
+
+Next: [Progressive Disclosure in Skills](../11-skills-progressive-disclosure/)

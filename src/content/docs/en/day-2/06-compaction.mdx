@@ -1,0 +1,34 @@
+---
+title: "6. Context Compaction"
+description: Summarising old history so a long task can continue without losing the thread.
+---
+
+## What it is
+
+When the window nears its limit, history is **summarised and the window restarted** with the summary. Done well, the task continues with little loss. Done badly, key decisions vanish.
+
+## Keep vs drop
+
+| Keep | Drop |
+|---|---|
+| Goal and acceptance criteria | Raw tool outputs already used |
+| Decisions and the reasons | Dead-end attempts |
+| Files changed, current state | Repeated file dumps |
+| Open problems and next steps | Chit-chat |
+
+## Practical techniques
+
+- **Compact early with a focus:** tell it what to preserve ("keep the migration decision and failing test names").
+- **Write notes outside the window** (a progress file) so nothing critical lives only in history.
+- **Clear old tool results** that are no longer needed.
+- **Prefer a fresh session** with a good handoff over a long, compacted one.
+
+:::tip
+In Claude Code, `/compact` summarises the conversation; you can pass instructions about what to keep.
+:::
+
+## Self-check
+
+What three facts would you never want lost during compaction in a CRM migration task?
+
+Next: [Memory Management & Persistent Memory](../07-memory/)

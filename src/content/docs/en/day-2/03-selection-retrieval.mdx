@@ -1,0 +1,34 @@
+---
+title: "3. Context Selection & Retrieval"
+description: Deciding what to preload and what to fetch only when needed.
+---
+
+## Two strategies
+
+| Strategy | How | Good for | Risk |
+|---|---|---|---|
+| **Upfront loading** | Put material in before the task starts | Small, always-needed rules | Bloat |
+| **Retrieval at runtime** | Agent searches and reads when needed | Large codebases, docs | Misses, extra steps |
+| **Hybrid** | Small core upfront, rest retrieved | Most real projects | Needs good structure |
+
+## Retrieval tools for coding agents
+
+| Tool | Finds |
+|---|---|
+| Glob / file listing | Files by name or path |
+| Grep / text search | Exact symbols and strings |
+| Semantic search | Concepts, when names are unknown |
+| Reading with line ranges | Only the relevant slice |
+
+## Rules of thumb
+
+- Preload only what is needed in **almost every** task.
+- Make the rest **findable**: clear names, an index, a docs map.
+- Prefer retrieving a **slice** over a whole file.
+- Good structure is retrieval infrastructure.
+
+## Self-check
+
+For a CRM task "change invoice rounding", what must be preloaded and what retrieved?
+
+Next: [Context Pollution & Context Rot](../04-pollution-rot/)

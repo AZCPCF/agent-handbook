@@ -1,0 +1,38 @@
+---
+title: "5. Just-in-Time Context Loading"
+description: Keep lightweight pointers in context and load the real content only when needed.
+---
+
+## The idea
+
+Instead of loading everything, keep **lightweight identifiers** (file paths, links, queries, titles) and let the agent load the data **at the moment it needs it**, like a developer who knows where things are but does not memorise the repo.
+
+## Progressive disclosure
+
+```text
+Level 0: index        "docs/domain/invoices.md - invoice rules"
+Level 1: the page     read when the task touches invoices
+Level 2: the details  code, tests, examples, only if needed
+```
+
+## Trade-offs
+
+| | Preloaded | Just-in-time |
+|---|---|---|
+| Speed per step | Faster | Slower (extra tool calls) |
+| Window usage | Heavy | Light |
+| Risk | Noise | Agent may not look |
+| Needs | Little structure | Good naming and an index |
+
+## Making it work
+
+1. Give every doc a one-line purpose.
+2. Keep a map file that points to the rest.
+3. Use consistent names so search succeeds.
+4. Tell the agent in instructions **where to look first** for each kind of task.
+
+## Self-check
+
+Write the one-line purpose for five docs in your CRM.
+
+Next: [Context Compaction](../06-compaction/)

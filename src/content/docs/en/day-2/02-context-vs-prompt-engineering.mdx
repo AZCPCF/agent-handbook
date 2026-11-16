@@ -1,0 +1,34 @@
+---
+title: "2. Context Engineering vs Prompt Engineering"
+description: From writing one good prompt to curating everything the model sees.
+---
+
+## The shift
+
+**Prompt engineering** optimises the wording of instructions. **Context engineering** curates the **whole set of tokens** at each step: instructions, tools, retrieved files, memory, history. The goal is the smallest set of high-signal tokens that makes the desired behaviour most likely.
+
+| | Prompt engineering | Context engineering |
+|---|---|---|
+| Unit | One prompt | The whole window, every turn |
+| Question | How do I phrase this? | What should be in view right now? |
+| Time scale | One call | A multi-step, multi-session run |
+| Levers | Wording, examples | Selection, retrieval, compaction, memory, tools |
+| Fails as | Vague answer | Drift, forgetting, noise |
+
+## Why agents force it
+
+An agent loop generates new data every turn (tool results). Without curation the window fills with noise. Context engineering is therefore **continuous**, not a one-time setup.
+
+## The five levers
+
+1. **Select** what goes in.
+2. **Retrieve** on demand.
+3. **Compact** what is old.
+4. **Persist** what matters outside the window.
+5. **Isolate** work in sub-contexts (subagents, Day 3).
+
+## Self-check
+
+Take a prompt you wrote recently. What was in the context *besides* the prompt?
+
+Next: [Context Selection & Retrieval](../03-selection-retrieval/)

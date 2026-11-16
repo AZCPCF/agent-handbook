@@ -1,0 +1,43 @@
+---
+title: "7. Memory Management & Persistent Memory"
+description: What to remember across sessions, where to store it, and how to keep it clean.
+---
+
+## Memory layers
+
+| Layer | Lifetime | Example |
+|---|---|---|
+| Working memory | One turn | Current tool results |
+| Session memory | One session | Conversation history |
+| Persistent memory | Across sessions | Files in the repo, memory notes |
+
+## What belongs in persistent memory
+
+- Conventions and commands (how to run tests)
+- Architectural **decisions** and their reasons
+- Domain rules
+- Known pitfalls
+
+## What does not
+
+- Secrets, tokens, real customer data
+- Temporary task state that expires
+- Things the code already says clearly
+- Agent guesses presented as facts
+
+## Hygiene
+
+1. **Single source of truth.** Do not duplicate facts across files.
+2. **Date and own** decisions.
+3. **Review and prune** regularly; stale memory is pollution.
+4. **Human-reviewed** changes for shared memory files.
+
+## Where memory lives
+
+Prefer **files in the repository** (versioned, reviewable) for team-critical knowledge. Tool-level memory features are convenient but verify what they stored.
+
+## Self-check
+
+Which five facts about your CRM deserve persistent memory today?
+
+Next: [Session Management & Continuity](../08-session-continuity/)

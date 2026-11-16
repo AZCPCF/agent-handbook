@@ -1,0 +1,43 @@
+---
+title: "14. Comparison Cheat-Sheet"
+description: Day 2 in tables.
+---
+
+## Where should knowledge live?
+
+| Knowledge | Place | Loaded |
+|---|---|---|
+| True for every task | Project instructions | Always |
+| True for one area | Path-scoped rule | When those files are touched |
+| A repeatable workflow | Skill | When triggered |
+| Domain detail, ADRs | `docs/` | On demand |
+| Current task progress | Progress file | At session start |
+| Secrets, real data | Nowhere in context | Never |
+
+## Context problems
+
+| Problem | Symptom | Fix |
+|---|---|---|
+| Too much | Slow, costly, unfocused | Trim, JIT loading |
+| Stale | Follows old rules | Prune, single source |
+| Lost | Forgets decisions | Notes outside window |
+| Polluted | Repeats dead ends | Fresh session / compact |
+
+## Memory vs context vs state
+
+| | Context | Memory | State |
+|---|---|---|---|
+| Lifetime | Window | Across sessions | Across sessions |
+| Holds | What model sees now | Conventions, decisions | Task progress |
+| Edited by | Harness | Human-reviewed | Agent |
+
+## Strategies
+
+| Strategy | Cost now | Cost later |
+|---|---|---|
+| Preload | High | Low |
+| Just-in-time | Low | Medium |
+| Compaction | Medium | Risk of loss |
+| Fresh session + handoff | Low | Needs good notes |
+
+Next: [Practical Exercise](../15-exercise/)

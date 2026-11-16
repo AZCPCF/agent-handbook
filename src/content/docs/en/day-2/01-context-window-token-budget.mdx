@@ -1,0 +1,43 @@
+---
+title: "1. Context Window & Token Budget"
+description: What the model sees on every call, and why it is a budget you must spend deliberately.
+---
+
+## What is the context?
+
+On every call the model sees **only** what is in its context window: system prompt, tool definitions, project instructions, conversation history and tool results. Nothing else exists for it. Tokens are the unit of that window.
+
+## Who spends your budget?
+
+| Consumer | Notes |
+|---|---|
+| System prompt and tool definitions | Fixed cost on every turn |
+| Project instructions (`CLAUDE.md`) | Loaded each session |
+| Conversation history | Grows every turn |
+| Tool results | Often the biggest spender (logs, file dumps) |
+| Model output and reasoning | Also counts |
+
+## Budget thinking
+
+- The window is **finite**, and quality drops before it is full (see *Context Rot*).
+- Treat tokens like memory in an embedded system: **allocate on purpose**.
+- Ask for every item: *does this change the next decision?* If not, it does not belong.
+
+```text
+total window
+ = fixed (system + tools + instructions)
+ + history
+ + tool results
+ + room to think and answer   <- never spend this
+```
+
+:::tip
+In Claude Code, `/context` shows what is using your window right now. Run it before long tasks.
+:::
+
+## Self-check
+
+1. List the three biggest token consumers in your last agent session.
+2. What would you remove from the fixed cost first?
+
+Next: [Context Engineering vs Prompt Engineering](../02-context-vs-prompt-engineering/)

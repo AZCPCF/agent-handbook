@@ -1,0 +1,34 @@
+---
+title: "12. Prompt Caching"
+description: Why the order of your context affects cost and speed.
+---
+
+## The idea
+
+Providers can **cache a repeated prefix** of the prompt. When the next call starts with the same prefix, that part is cheaper and faster to process. Agent loops resend the same prefix every turn, so caching matters a lot.
+
+## Consequences for design
+
+| Do | Why |
+|---|---|
+| Put **stable** content first (system, tools, instructions) | Maximises reusable prefix |
+| Put **changing** content last | Changes late do not break the prefix |
+| Avoid editing early context mid-session | Any change invalidates what follows |
+| Avoid changing tool lists and instructions mid-task | Same reason |
+
+```text
+[ system | tools | project instructions ]  <- stable, cacheable
+[ history | tool results | new message ]   <- volatile
+```
+
+## Practical impact
+
+- Long sessions with a stable prefix are cheaper than they look.
+- Frequent small edits to instruction files at session start reduce cache reuse.
+- Caches expire; exact rules and prices vary by provider, so verify them in the current docs.
+
+## Self-check
+
+Why might adding a timestamp at the top of your instructions be a bad idea?
+
+Next: [Implementation in Claude Code](../13-claude-code-implementation/)

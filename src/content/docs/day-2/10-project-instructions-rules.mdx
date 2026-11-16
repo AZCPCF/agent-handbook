@@ -1,0 +1,42 @@
+---
+title: "۱۰. Project Instructions و Path-scoped Rules"
+description: نوشتن فایل‌های دستورالعمل کوتاه و مفید و محدود کردن قواعد به بخش‌های مشخصی از کدبیس.
+---
+
+## فایل دستورالعمل پروژه خوب
+
+| بگنجان | نگنجان |
+|---|---|
+| دستورهای Build، Test، Lint | آموزش‌های طولانی |
+| معماری در چند خط | چیزهایی که از کد معلوم است |
+| قراردادهایی که با پیش‌فرض فرق دارند | مستندات تکراری |
+| قواعد سخت «نکن» با دلیل | ده‌ها قاعده مبهم |
+| اشاره به مستندات عمیق‌تر | Specهای کپی‌شده |
+
+**کوتاه** نگهش دار. هر خط در هر Session هزینه دارد.
+
+## اسکلت نمونه
+
+```md
+# CRM project
+## Commands
+- Test: pnpm test | Lint: pnpm lint | Typecheck: pnpm typecheck
+## Architecture
+- apps/web (Next.js), packages/db (schema + migrations)
+## Rules
+- Never edit existing migrations; add new ones (needs human approval)
+- No direct DB access to production
+## Where to look
+- Invoice rules: docs/domain/invoices.md
+- ADRs: docs/decisions/
+```
+
+## Path-scoped Rules
+
+قواعدی که فقط برای بعضی فایل‌ها مهم‌اند باید **فقط وقتی آن فایل‌ها درگیرند** بارگذاری شوند؛ مثلاً قواعد `packages/db/**` فقط هنگام کار روی لایه دیتابیس. این کار Context عمومی را کوچک نگه می‌دارد. قالب دقیق فایل و Frontmatter به ابزار بستگی دارد؛ در مستندات آن بررسی کن.
+
+## خودآزمایی
+
+یک فایل دستورالعمل ۱۵ خطی برای CRM خودت بنویس. آن را به ۱۰ خط برسان.
+
+بعدی: [Progressive Disclosure در Skills](../11-skills-progressive-disclosure/)

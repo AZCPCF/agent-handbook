@@ -1,0 +1,45 @@
+---
+title: "4. Context Pollution & Context Rot"
+description: Why more context often means worse results.
+---
+
+## Definitions
+
+- **Context pollution:** irrelevant, stale or contradictory material in the window.
+- **Context rot:** performance degrading as the window grows, because attention over many tokens gets spread thin.
+
+## Typical sources
+
+| Source | Example |
+|---|---|
+| Huge tool output | Entire test log pasted back |
+| Dead ends | Failed attempts still in history |
+| Contradictions | Old instructions vs new ones |
+| Over-long instruction files | Rules nobody needs now |
+| Unrelated files | Read "just in case" |
+
+## Symptoms
+
+- Ignores rules it followed earlier
+- Repeats failed approaches
+- Confident but inconsistent edits
+
+## Fixes
+
+| Fix | When |
+|---|---|
+| Start a fresh session | New, unrelated task |
+| Compact with a focus | Same task, long history |
+| Trim tool output | Always |
+| Delete stale instructions | During review |
+| Delegate noisy work to a subagent | Wide exploration |
+
+:::caution
+Do not fight a polluted session with more instructions. Clean the context instead.
+:::
+
+## Self-check
+
+Describe a session where you should have restarted instead of continuing.
+
+Next: [Just-in-Time Context Loading](../05-just-in-time/)

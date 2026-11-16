@@ -1,0 +1,41 @@
+---
+title: "11. Progressive Disclosure in Skills"
+description: How skills keep context small while still carrying deep, reusable knowledge.
+---
+
+## The three levels
+
+| Level | What loads | When |
+|---|---|---|
+| 1. Metadata | Name and short description | Always |
+| 2. Skill body | Main instructions | When the skill is triggered |
+| 3. Bundled files | Scripts, references, templates | Only if the body points to them |
+
+So you can own many skills at **almost no standing cost**; only the triggered one expands.
+
+## Anatomy
+
+```text
+.claude/skills/fix-bug/
+├── SKILL.md          # name, description, steps
+├── reference.md      # deeper notes, loaded on demand
+└── scripts/          # deterministic helpers
+```
+
+## Writing a good description
+
+The description is the **trigger**. Say *what it does and when to use it*, in the words you would actually use in a request.
+
+## Skill vs instruction file
+
+| | Project instructions | Skill |
+|---|---|---|
+| Loaded | Every session | When relevant |
+| Best for | Facts true for everything | Specific, repeatable workflows |
+| Size | Small | Can be larger |
+
+## Self-check
+
+Which of your recurring tasks deserve a skill instead of a line in the instruction file?
+
+Next: [Prompt Caching](../12-prompt-caching/)

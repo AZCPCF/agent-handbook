@@ -1,0 +1,44 @@
+---
+title: "۸. Session Management و Session Continuity"
+description: کار در چندین Session بدون از دست دادن رشته کار.
+---
+
+## اصول
+
+- در صورت امکان **هر Session یک تسک**.
+- Session یک‌بارمصرف است؛ **State باید بیرون از آن زندگی کند**.
+- تاریخچه Git و فایل پیشرفت، لایه پیوستگی تو هستند.
+
+## قالب یادداشت Handoff
+
+```md
+# Progress - <task>
+## Goal
+## Done
+## Decisions (with reasons)
+## Current state (branch, failing tests)
+## Next steps
+## Open questions
+```
+
+## عملیات Session
+
+| نیاز | رویکرد |
+|---|---|
+| ادامه کار دیروز | Resume یا شروع تازه و بارگذاری فایل پیشرفت |
+| تسک جدید نامرتبط | Session جدید |
+| پنجره تقریباً پر | Compact یا Handoff + Session تازه |
+| امتحان یک ایده پرریسک | Branch یا Worktree جدا |
+
+## چک‌لیست پیوستگی
+
+- [ ] فایل پیشرفت قبل از پایان به‌روز شده
+- [ ] کار روی یک Branch commit شده
+- [ ] گام بعدی نوشته شده، نه در ذهن
+- [ ] وضعیت تست‌ها ثبت شده (سبز/قرمز و دلیل)
+
+## خودآزمایی
+
+آیا یک غریبه می‌تواند فقط از روی یادداشت‌هایت Session قبلی را ادامه بدهد؟
+
+بعدی: [Instruction Hierarchy](../09-instruction-hierarchy/)

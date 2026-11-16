@@ -1,0 +1,32 @@
+---
+title: "13. Implementation in Claude Code"
+description: Mapping Day 2 concepts to Claude Code features.
+---
+
+:::note
+Feature names and behaviour change over time. Treat this page as a map and confirm details in the official Claude Code docs.
+:::
+
+| Concept | Claude Code feature |
+|---|---|
+| Project instructions | `CLAUDE.md` (project and user levels) |
+| Cross-tool instructions | `AGENTS.md`; common approach is to reference it from `CLAUDE.md` |
+| Persistent notes | Memory features and files you keep in the repo |
+| Path-scoped rules | Rule files under `.claude/rules/` |
+| Progressive disclosure | Skills under `.claude/skills/` |
+| Inspect the window | `/context` |
+| Compaction | `/compact` (with optional focus instructions) |
+| Isolation | Subagents (Day 3) |
+
+## Practice
+
+1. Run `/context` on a fresh session and note the baseline.
+2. Run it again after reading a large file.
+3. Use `/compact` with a focus sentence and compare what survived.
+4. Move one rarely-needed section from `CLAUDE.md` into a skill and observe the baseline change.
+
+## Self-check
+
+What is your session's fixed cost before you type anything?
+
+Next: [Comparison Cheat-Sheet](../14-comparison-cheatsheet/)

@@ -1,0 +1,44 @@
+---
+title: "8. Session Management & Session Continuity"
+description: Working across many sessions without losing the thread.
+---
+
+## Principles
+
+- **One task per session** when possible.
+- A session is disposable; **state must live outside it**.
+- Git history and a progress file are your continuity layer.
+
+## Handoff note template
+
+```md
+# Progress - <task>
+## Goal
+## Done
+## Decisions (with reasons)
+## Current state (branch, failing tests)
+## Next steps
+## Open questions
+```
+
+## Session operations
+
+| Need | Approach |
+|---|---|
+| Continue yesterday's work | Resume or start fresh and load the progress file |
+| New unrelated task | New session |
+| Window nearly full | Compact or handoff + fresh session |
+| Try a risky idea | Separate branch or worktree |
+
+## Continuity checklist
+
+- [ ] Progress file updated before ending
+- [ ] Work committed to a branch
+- [ ] Next step is written, not remembered
+- [ ] Tests state recorded (green/red and why)
+
+## Self-check
+
+Could a stranger resume your last session from your notes alone?
+
+Next: [Instruction Hierarchy](../09-instruction-hierarchy/)
