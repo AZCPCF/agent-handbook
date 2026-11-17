@@ -10,11 +10,15 @@
   },
   "dependencies": {
     "@astrojs/starlight": "latest",
+    "@fontsource-variable/inter": "^5.3.0",
     "@fontsource/vazirmatn": "latest",
     "astro": "latest",
     "sharp": "latest"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["sharp", "esbuild"]
+    "onlyBuiltDependencies": [
+      "sharp",
+      "esbuild"
+    ]
   }
 }

@@ -11,6 +11,9 @@ importers:
       '@astrojs/starlight':
         specifier: latest
         version: 0.43.1(astro@7.4.12(@types/node@26.6.6)(yaml@2.9.1))
+      '@fontsource-variable/inter':
+        specifier: ^5.3.0
+        version: 5.3.0
       '@fontsource/vazirmatn':
         specifier: latest
         version: 5.3.0
@@ -318,6 +321,9 @@ packages:
 
   '@expressive-code/plugin-text-markers@0.44.3':
     resolution: {integrity: sha512-4Ae2xRSDV5kdWPsi40xWbOtoihbzM0zLVjQKkDAnD5KzFXl+6/kd+VhuWOlTRVaJ5cqGk++vCbAaf0MR1XbZlw==}
+
+  '@fontsource-variable/inter@5.3.0':
+    resolution: {integrity: sha512-OupL48va4JNofb97w6NYeF9S7W/kHNKM0Er8Dem5nqi4jeOLrVJDoE8tZEpnMJmtkvNbB1EIPPwHcdkF6b1oUA==}
 
   '@fontsource/vazirmatn@5.3.0':
     resolution: {integrity: sha512-XC/2yN2r5gwhFT3klSuWaqncODX2DOfRYfNmbyzgtWYxHxMC+tcoaX+tgggrm6hSkEgpR1TuSDEf1PiI91G7qg==}
@@ -1952,6 +1958,8 @@ snapshots:
   '@expressive-code/plugin-text-markers@0.44.3':
     dependencies:
       '@expressive-code/core': 0.44.3
+
+  '@fontsource-variable/inter@5.3.0': {}
 
   '@fontsource/vazirmatn@5.3.0': {}
 

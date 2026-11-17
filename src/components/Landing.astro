@@ -1,0 +1,93 @@
+---
+import { days } from '../data/days';
+
+const { lang = 'en' } = Astro.props as { lang?: 'fa' | 'en' };
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const prefix = lang === 'en' ? '/en' : '';
+const href = (d: (typeof days)[number]) => `${base}${prefix}/${d.slug}/${d.first}/`;
+
+const ready = days.filter((d) => d.status === 'ready');
+const pagesReady = ready.reduce((sum, d) => sum + d.pages, 0);
+const nf = new Intl.NumberFormat(lang === 'fa' ? 'fa-IR' : 'en-US');
+
+const t = lang === 'fa'
+  ? {
+      eyebrow: 'بوتکمپ ۷ روزه',
+      title: 'کتاب Agent Engineering',
+      lead: 'یاد بگیر یک Coding Agent را مثل یک مهندس در تیمت مدیریت کنی: دسترسی بده، کار را تقسیم کن، خروجی را اعتبارسنجی کن و کنترل پروژه سه‌ماهه را از دست نده.',
+      start: 'شروع از روز ۱',
+      stats: [
+        [nf.format(days.length), 'روز'],
+        [nf.format(pagesReady), 'صفحه آماده'],
+        [nf.format(2), 'زبان'],
+      ],
+      daysTitle: 'مسیر یادگیری',
+      ready: 'آماده',
+      soon: 'به‌زودی',
+      day: 'روز',
+      pages: 'صفحه',
+    }
+  : {
+      eyebrow: '7-day bootcamp',
+      title: 'Agent Engineering Handbook',
+      lead: 'Learn to manage a coding agent like an engineer on your team: grant access, split the work, verify the output and keep control of a three-month project.',
+      start: 'Start with Day 1',
+      stats: [
+        [nf.format(days.length), 'days'],
+        [nf.format(pagesReady), 'pages ready'],
+        [nf.format(2), 'languages'],
+      ],
+      daysTitle: 'Learning path',
+      ready: 'Ready',
+      soon: 'Soon',
+      day: 'Day',
+      pages: 'pages',
+    };
+---
+
+<div class="lp-root">
+  <section class="lp-hero">
+    <p class="lp-eyebrow">{t.eyebrow}</p>
+    <h2 class="lp-title">{t.title}</h2>
+    <p class="lp-lead">{t.lead}</p>
+    <div class="lp-actions">
+      <a class="lp-btn lp-btn--primary" href={href(days[0])}>{t.start}</a>
+    </div>
+    <ul class="lp-stats">
+      {t.stats.map(([value, label]) => (
+        <li><strong>{value}</strong><span>{label}</span></li>
+      ))}
+    </ul>
+  </section>
+
+  <h3 class="lp-section">{t.daysTitle}</h3>
+  <div class="lp-grid">
+    {days.map((d) =>
+      d.status === 'ready' ? (
+        <a class="lp-card" href={href(d)}>
+          <span class="lp-card__num">{nf.format(d.n)}</span>
+          <span class="lp-card__body">
+            <span class="lp-card__meta">
+              {t.day} {nf.format(d.n)} · {nf.format(d.pages)} {t.pages}
+              <em class="lp-badge lp-badge--ready">{t.ready}</em>
+            </span>
+            <strong class="lp-card__title">{d.title[lang]}</strong>
+            <span class="lp-card__blurb">{d.blurb[lang]}</span>
+          </span>
+        </a>
+      ) : (
+        <div class="lp-card lp-card--soon" aria-disabled="true">
+          <span class="lp-card__num">{nf.format(d.n)}</span>
+          <span class="lp-card__body">
+            <span class="lp-card__meta">
+              {t.day} {nf.format(d.n)}
+              <em class="lp-badge">{t.soon}</em>
+            </span>
+            <strong class="lp-card__title">{d.title[lang]}</strong>
+            <span class="lp-card__blurb">{d.blurb[lang]}</span>
+          </span>
+        </div>
+      )
+    )}
+  </div>
+</div>
