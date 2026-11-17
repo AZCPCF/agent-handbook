@@ -1,0 +1,45 @@
+---
+title: "2. Plan-and-Execute vs ReAct"
+description: Two core control patterns for an agent's reasoning loop.
+---
+
+## The patterns
+
+- **ReAct** (Reason + Act): think a little, act, observe, repeat. Planning and acting are **interleaved**.
+- **Plan-and-Execute:** produce a **full plan first**, then execute step by step, re-planning if reality diverges.
+
+```text
+ReAct:             think -> act -> observe -> think -> act -> observe ...
+Plan-and-Execute:  plan[1..n] -> execute 1 -> execute 2 -> ... (re-plan on failure)
+```
+
+## Comparison
+
+| | ReAct | Plan-and-Execute |
+|---|---|---|
+| Adapts to surprises | Very well | Needs explicit re-planning |
+| Predictability | Lower | Higher (you can review the plan) |
+| Cost | Can wander | Plan costs upfront, steps stay focused |
+| Human oversight | Hard (many small moves) | Easy (approve the plan) |
+| Best for | Debugging, exploration | Features, refactors, anything risky |
+
+## Hybrid in practice
+
+1. **Plan** the task (read-only exploration, no edits).
+2. **You review and approve** the plan.
+3. **Execute** with ReAct inside each step (run, observe, fix).
+4. **Re-plan** if a step invalidates the plan.
+
+:::note
+Claude Code's Plan Mode supports step 1 and 2: the agent explores and proposes before it changes anything.
+:::
+
+## Rule of thumb
+
+The more irreversible or wide the change, the more you want a **reviewed plan** before any edit.
+
+## Self-check
+
+For "rename a database column used in 40 files", which pattern and why?
+
+Next: [Delegation & Subagent Architecture](../03-delegation-subagents/)

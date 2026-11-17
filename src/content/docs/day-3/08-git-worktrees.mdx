@@ -1,0 +1,42 @@
+---
+title: "۸. Git Worktrees و توسعه موازی"
+description: دادن یک پوشه کاری جدا روی یک Branch جدا به هر Agent.
+---
+
+## Worktree چیست؟
+
+**Git Worktree** یک پوشه کاری اضافه است که به **همان ریپو** وصل است و روی Branch دیگری Checkout شده. Agentها می‌توانند موازی ویرایش کنند بی‌آنکه فایل‌های هم را بازنویسی کنند و بدون Clone دوباره کل ریپو.
+
+```bash
+git worktree add ../crm-roles-api   -b feature/roles-api
+git worktree add ../crm-roles-ui    -b feature/roles-ui
+git worktree list
+git worktree remove ../crm-roles-api   # after merging
+```
+
+## مقایسه
+
+| | تعویض Branch | Clone دوم | Worktree |
+|---|---|---|---|
+| کار موازی | خیر | بله | بله |
+| دیسک و راه‌اندازی | کم | زیاد | کم |
+| تاریخچه مشترک | بله | جدا | مشترک |
+| خطر بازنویسی | زیاد | کم | کم |
+
+## قواعد برای Agentها
+
+1. **یک Agent، یک Worktree، یک Branch.**
+2. هرگز نگذار دو Agent در یک Worktree بنویسند.
+3. به هرکدام **Port، فایل Env و دیتابیس تست** جدا بده تا در زمان اجرا تداخل نکنند.
+4. ادغام از طریق PR و CI باشد، نه کپی فایل.
+5. Worktreeهای تمام‌شده را پاک کن.
+
+:::caution
+Worktree **فایل‌ها** را ایزوله می‌کند، نه دیتابیس یا سرویس‌های بیرونی را. آن‌ها را جداگانه ایزوله کن.
+:::
+
+## خودآزمایی
+
+چطور Agent API و Agent UI را هم‌زمان بدون تداخل Port اجرا می‌کنی؟
+
+بعدی: [Agentهای Planner، Coder و Reviewer](../09-planner-coder-reviewer/)

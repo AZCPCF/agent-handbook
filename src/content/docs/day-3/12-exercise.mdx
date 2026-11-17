@@ -1,0 +1,50 @@
+---
+title: "۱۲. تمرین عملی — معماری Multi-Agent"
+description: ماژول کاربران و نقش‌های CRM را بین Agentها تقسیم کن و تعیین کن چه چیزی موازی اجرا شود.
+---
+
+## تسک
+
+طراحی کن Agentها چطور **ماژول کاربران و نقش‌ها** را برای CRM می‌سازند. خروجی: فایل `multi-agent-architecture.md`.
+
+## تقسیم مرجع (الگو برای تطبیق)
+
+| شناسه | تسک | مالک | وابسته به | موازی؟ | Gate انسانی |
+|---|---|---|---|---|---|
+| T0 | Spec: نقش‌ها، مجوزها، قرارداد API | Planner | ندارد | — | تو تأیید می‌کنی |
+| T1 | Schema و Migration | Coder A | T0 | خیر | **تأیید Migration** |
+| T2 | Helper مجوز با Unit Test | Coder B | T0 | بله، با T3 | خیر |
+| T3 | Endpointهای API با تست | Coder C | T0، T1 | بله، با T2 | خیر |
+| T4 | صفحه‌های UI | Coder D | قرارداد T3 | بعد از T3 | خیر |
+| T5 | تست‌های E2E | Tester | T4 | خیر | خیر |
+| T6 | بازبینی هر PR | Reviewer | هر تسک | به‌ازای هر PR | تو Merge می‌کنی |
+
+## نکات معماری که باید بیاوری
+
+- **ایزوله‌سازی:** هر Coder در Worktree، Branch، Port و دیتابیس تست جدا.
+- **ارتباط:** فایل‌های Spec و قرارداد در `specs/`، پیشرفت در `tasks/`.
+- **مجوزها:** Planner و Reviewer فقط‌خواندنی؛ Coderها به Production و Migrationهای موجود دست نمی‌زنند.
+- **محدودیت‌ها:** حداکثر سه دور Coder-Reviewer، بعد Escalate.
+- **برنامه تعارض:** یک مالک برای هر گروه فایل؛ Contract Test بین API و UI.
+
+## قالب تو
+
+```md
+# multi-agent-architecture.md
+## Goal
+## Agents and roles (permissions, tools, return contract)
+## Task table (id / owner / depends on / parallel / gate)
+## Dependency graph
+## Isolation (worktrees, ports, DB)
+## Communication and shared state
+## Conflict resolution
+## Budgets and stop conditions
+## Human approval points
+```
+
+## وقتی تمام است که
+
+- [ ] هر تسک یک مالک و معیار پذیرش دارد
+- [ ] تسک‌های موازی فایل مشترک ندارند و قرارداد توافق‌شده دارند
+- [ ] گام‌های غیرقابل‌بازگشت با تأیید تو Gate شده‌اند
+- [ ] Reviewer مستقل و فقط‌خواندنی است

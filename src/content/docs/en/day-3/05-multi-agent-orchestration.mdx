@@ -1,0 +1,45 @@
+---
+title: "5. Multi-Agent Orchestration"
+description: Patterns for coordinating several agents, and when not to.
+---
+
+## Core patterns
+
+| Pattern | Shape | CRM example |
+|---|---|---|
+| **Orchestrator-workers** | Lead splits work, workers execute, lead merges | Lead assigns schema, API and UI tasks |
+| **Pipeline** | Fixed chain of specialists | Planner → Coder → Tester → Reviewer |
+| **Fan-out / fan-in** | Many agents on independent parts, then merge | Review one PR on security, style and performance |
+| **Generate-and-critique** | One produces, another critiques, loop | Coder and reviewer iterate until criteria pass |
+
+```text
+            +-------- Lead / Orchestrator --------+
+            |  plan, assign, integrate, decide    |
+            +------+---------------+--------------+
+                   v               v
+              Worker A         Worker B       (own context, own tools)
+```
+
+## Start simple
+
+Multi-agent systems cost **more tokens, more coordination and more failure modes**. Add an agent only when you can name the benefit:
+
+- parallel speed-up
+- isolation of noisy work
+- an independent check
+- different permissions
+
+## Typical failures
+
+| Failure | Prevention |
+|---|---|
+| Workers duplicate work | Clear ownership per task |
+| Inconsistent decisions | Shared spec before coding |
+| Lead loses control | Small number of agents, explicit return contracts |
+| Runaway cost | Budgets and step limits per agent |
+
+## Self-check
+
+For a bug fix, is multi-agent justified? For a 3-layer feature?
+
+Next: [Parallel vs Sequential Execution](../06-parallel-vs-sequential/)

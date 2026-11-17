@@ -1,0 +1,50 @@
+---
+title: "12. Practical Exercise — Multi-Agent Architecture"
+description: Split the CRM users and roles module across agents and decide what runs in parallel.
+---
+
+## Task
+
+Design how agents would build the **users and roles module** for the CRM. Deliverable: `multi-agent-architecture.md`.
+
+## Reference decomposition (pattern to adapt)
+
+| ID | Task | Owner | Depends on | Parallel? | Human gate |
+|---|---|---|---|---|---|
+| T0 | Spec: roles, permissions, API contract | Planner | none | n/a | You approve |
+| T1 | Schema and migration | Coder A | T0 | No | **Approve migration** |
+| T2 | Permission helper with unit tests | Coder B | T0 | Yes, with T3 | No |
+| T3 | API endpoints with tests | Coder C | T0, T1 | Yes, with T2 | No |
+| T4 | UI screens | Coder D | T3 contract | After T3 | No |
+| T5 | E2E tests | Tester | T4 | No | No |
+| T6 | Review of each PR | Reviewer | each task | Per PR | You merge |
+
+## Architecture notes to include
+
+- **Isolation:** each coder in its own worktree, branch, port and test DB.
+- **Communication:** spec and contract files in `specs/`, progress in `tasks/`.
+- **Permissions:** planner and reviewer read-only; coders cannot touch production or existing migrations.
+- **Limits:** at most three coder-reviewer rounds, then escalate.
+- **Conflict plan:** one owner per file group; contract tests between API and UI.
+
+## Your template
+
+```md
+# multi-agent-architecture.md
+## Goal
+## Agents and roles (permissions, tools, return contract)
+## Task table (id / owner / depends on / parallel / gate)
+## Dependency graph
+## Isolation (worktrees, ports, DB)
+## Communication and shared state
+## Conflict resolution
+## Budgets and stop conditions
+## Human approval points
+```
+
+## Done when
+
+- [ ] Every task has one owner and acceptance criteria
+- [ ] Parallel tasks share no files and have an agreed contract
+- [ ] Irreversible steps are gated by you
+- [ ] The reviewer is independent and read-only

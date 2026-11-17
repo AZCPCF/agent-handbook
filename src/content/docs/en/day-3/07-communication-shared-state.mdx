@@ -1,0 +1,37 @@
+---
+title: "7. Agent Communication, Shared State & Conflict Resolution"
+description: How agents exchange information and what to do when their work collides.
+---
+
+## Communication channels
+
+| Channel | How it works | Notes |
+|---|---|---|
+| **Brief and summary** | Lead passes a brief, gets a summary | Simplest, most robust |
+| **Shared artifacts** | Specs, task files, progress notes in the repo | Durable and reviewable |
+| **Git** | Branches, commits, PRs | Natural integration point |
+| **Direct messages** | Agents message each other | Powerful but hard to control |
+
+Prefer **artifact-based** communication: it leaves an audit trail and survives session resets.
+
+## Shared state rules
+
+1. **One owner per piece of state** (file, table, task).
+2. **Single writer** where possible; others read.
+3. **Contracts first:** write the interface or schema spec before parallel work.
+4. Record decisions in files, not only in chat.
+
+## Conflict types and resolution
+
+| Conflict | Example | Resolution |
+|---|---|---|
+| **Textual** | Two branches edit one file | Ownership boundaries; merge by a human or integration agent |
+| **Semantic** | API returns `role_id`, UI expects `roleId` | Shared contract and contract tests |
+| **Duplicate work** | Two agents add the same helper | Task board with claims |
+| **Priority clash** | Agents disagree on an approach | Lead decides; escalate to you |
+
+## Self-check
+
+Where would you write the API contract so that two agents can work from it?
+
+Next: [Git Worktrees & Parallel Development](../08-git-worktrees/)

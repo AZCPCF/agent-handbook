@@ -1,0 +1,42 @@
+---
+title: "8. Git Worktrees & Parallel Development"
+description: Giving each agent its own working directory on its own branch.
+---
+
+## What a worktree is
+
+A **git worktree** is an extra working directory attached to the **same repository**, checked out on a different branch. Agents can edit in parallel without overwriting each other's files, and without cloning the whole repo again.
+
+```bash
+git worktree add ../crm-roles-api   -b feature/roles-api
+git worktree add ../crm-roles-ui    -b feature/roles-ui
+git worktree list
+git worktree remove ../crm-roles-api   # after merging
+```
+
+## Comparison
+
+| | Switch branches | Second clone | Worktree |
+|---|---|---|---|
+| Parallel work | No | Yes | Yes |
+| Disk and setup | Low | High | Low |
+| Shared history | Yes | Separate | Shared |
+| Risk of clobbering | High | Low | Low |
+
+## Rules for agents
+
+1. **One agent, one worktree, one branch.**
+2. Never let two agents write in the same worktree.
+3. Give each its own **port, env file and test database** so they do not collide at runtime.
+4. Merge through PRs and CI, not by copying files.
+5. Remove finished worktrees.
+
+:::caution
+A worktree isolates **files**, not the database or external services. Isolate those separately.
+:::
+
+## Self-check
+
+How would you run the API agent and the UI agent at the same time without port conflicts?
+
+Next: [Planner, Coder and Reviewer Agents](../09-planner-coder-reviewer/)

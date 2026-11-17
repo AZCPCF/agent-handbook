@@ -1,0 +1,46 @@
+---
+title: "10. Implementation in Claude Code"
+description: Subagents, custom agents, Plan Mode, delegation and Agent Teams.
+---
+
+:::note
+Features evolve quickly. Use this page as a map and confirm file formats and options in the official Claude Code docs.
+:::
+
+| Concept | Claude Code feature |
+|---|---|
+| Subagent | Separate agent with its own context window and tool set |
+| Custom agent | A Markdown file with frontmatter, usually under `.claude/agents/` (project) or in your user folder |
+| Delegation | Automatic, based on the agent's description, or explicit when you name the agent |
+| Plan-first | Plan Mode: explore and propose without editing |
+| Parallel isolation | Git worktrees, one session per worktree |
+| Agent Teams | Several coordinated sessions; learn the architecture and limits, do not depend on it for the project |
+
+## Example custom agent
+
+```md
+---
+name: code-reviewer
+description: Reviews diffs against acceptance criteria, security and project conventions. Use after code changes.
+tools: Read, Grep, Glob, Bash
+---
+You are a strict reviewer. You never edit files.
+Check the diff against the task's acceptance criteria and project rules.
+Return: verdict (pass/fail), findings by severity with file and line, missing tests.
+Keep the report under 40 lines.
+```
+
+The **description** is what triggers delegation: write it like a job posting, with when to use it.
+
+## Practice
+
+1. Create `code-reviewer` and run it on a small diff.
+2. Create a read-only `repo-explorer` agent that returns a 10-line map.
+3. Use Plan Mode on a multi-file change and edit the plan before approving.
+4. Create two worktrees and run one session in each.
+
+## Self-check
+
+Which tools would you deny the reviewer, and why?
+
+Next: [Comparison Cheat-Sheet](../11-comparison-cheatsheet/)

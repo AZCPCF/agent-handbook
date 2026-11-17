@@ -1,0 +1,47 @@
+---
+title: "6. Parallel vs Sequential Execution"
+description: Deciding what can run at the same time and what must wait.
+---
+
+## The decision test
+
+Two tasks can run in parallel only if **neither needs the other's output** and they **do not edit the same files or state**.
+
+| Condition | Run |
+|---|---|
+| Independent reading and research | Parallel (safe, cheap to merge) |
+| Independent writes in different modules | Parallel with separate branches |
+| B needs A's result or interface | Sequential |
+| Same file, same table, same config | Sequential |
+
+## Dependency graph (CRM users and roles)
+
+```text
+[1 schema + migration]
+        |
+   +----+-------------+
+   v                  v
+[2 permission lib] [3 API endpoints]   <- parallel after the interface is fixed
+        |                  |
+        +--------+---------+
+                 v
+            [4 UI]
+                 v
+            [5 e2e tests]
+```
+
+## Costs of parallelism
+
+- **Merge cost:** conflicts and integration bugs.
+- **Review load:** more diffs for you to read.
+- **Spec drift:** agents may interpret an interface differently.
+
+:::tip
+Parallelize **reading and research** freely. Parallelize **writing** only after the interfaces are agreed in a spec.
+:::
+
+## Self-check
+
+Draw the dependency graph for "export customers to CSV". What can run in parallel?
+
+Next: [Communication, Shared State & Conflicts](../07-communication-shared-state/)

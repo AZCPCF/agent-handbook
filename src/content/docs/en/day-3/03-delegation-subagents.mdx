@@ -1,0 +1,44 @@
+---
+title: "3. Agent Delegation & Subagent Architecture"
+description: When and how a lead agent hands work to specialised helpers.
+---
+
+## Definition
+
+**Delegation** means a lead agent hands a self-contained job to another agent. A **subagent** runs in its **own fresh context**, does the job, and returns a **result summary** to the lead.
+
+```text
+Lead agent --(brief)--> Subagent  [own context, own tools]
+Lead agent <--(summary)-- Subagent
+```
+
+## When to delegate
+
+| Delegate | Do not delegate |
+|---|---|
+| Noisy exploration (search the repo, read many files) | Tightly coupled edits needing shared understanding |
+| Independent tasks that can run in parallel | Tiny tasks (overhead exceeds benefit) |
+| Specialised roles (reviewer, test writer) | Decisions that need your full context |
+| Work needing different permissions | Anything you cannot verify afterwards |
+
+## The brief (what you hand over)
+
+A subagent knows **nothing** except the brief. Include:
+
+1. **Goal:** what done looks like.
+2. **Context:** only the facts it needs, with file paths.
+3. **Constraints:** what it must not touch.
+4. **Output format:** what to return and how long.
+
+## Architecture questions to answer
+
+- Who can **spawn** agents? (usually only the lead)
+- What **tools and permissions** does each get? (least privilege)
+- What is the **return contract**? (summary, not transcript)
+- What is the **stop condition and budget**?
+
+## Self-check
+
+Write a brief for a subagent that finds every place invoice totals are computed.
+
+Next: [Context Isolation](../04-context-isolation/)

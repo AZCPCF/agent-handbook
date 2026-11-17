@@ -1,0 +1,48 @@
+---
+title: "1. Task Decomposition & Hierarchical Planning"
+description: Turning a large goal into small, verifiable pieces an agent can finish reliably.
+---
+
+## Why decompose?
+
+Large tasks overflow the context window and lower reliability. Every extra step an agent takes unverified multiplies the chance of drift. Decomposition is the **single most important skill** in managing agents.
+
+## What makes a good subtask
+
+| Property | Meaning |
+|---|---|
+| **Small** | Fits one session and one reviewable PR |
+| **Verifiable** | Has a test or acceptance criterion |
+| **Self-contained** | Clear inputs and outputs |
+| **Ordered by dependency** | Prerequisites are explicit |
+
+## Hierarchical planning
+
+Plan from coarse to fine; add detail only when you get there.
+
+| Level | Example (CRM users and roles) | Owner |
+|---|---|---|
+| Goal | Users can have roles with permissions | You |
+| Epic | Permission model, API, UI | You |
+| Feature | "Assign role to user" | You + planning agent |
+| Task | Add `roles` table and migration | Agent (human approves migration) |
+| Step | Write failing test, implement, run | Agent |
+
+## Good vs bad decomposition
+
+| Bad | Good |
+|---|---|
+| "Build the roles module" | "Add roles schema + migration", "Add `can(user, action)` helper with tests" |
+| Tasks touching ten files | One concern per task |
+| Hidden dependencies | Dependency list per task |
+| No done-criteria | Acceptance criteria written first |
+
+:::tip
+If you cannot describe how to verify a task in one sentence, it is not decomposed enough.
+:::
+
+## Self-check
+
+Decompose "add audit log to the CRM" into five tasks with acceptance criteria.
+
+Next: [Plan-and-Execute vs ReAct](../02-plan-execute-react/)

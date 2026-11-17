@@ -1,0 +1,46 @@
+---
+title: "۱۰. پیاده‌سازی در Claude Code"
+description: Subagents، Custom Agents، Plan Mode، Delegation و Agent Teams.
+---
+
+:::note
+قابلیت‌ها سریع تغییر می‌کنند. این صفحه را یک نقشه بدان و قالب فایل‌ها و گزینه‌ها را در مستندات رسمی Claude Code تأیید کن.
+:::
+
+| مفهوم | قابلیت Claude Code |
+|---|---|
+| Subagent | Agent جدا با Context Window و مجموعه ابزار مخصوص خودش |
+| Custom Agent | یک فایل Markdown با Frontmatter، معمولاً زیر `.claude/agents/` (پروژه) یا در پوشه کاربر |
+| Delegation | خودکار بر اساس توضیح Agent، یا صریح وقتی اسمش را می‌آوری |
+| Plan-first | Plan Mode: کاوش و پیشنهاد بدون ویرایش |
+| ایزوله‌سازی موازی | Git Worktree، یک Session در هر Worktree |
+| Agent Teams | چند Session هماهنگ؛ معماری و محدودیت‌ها را بشناس، پروژه را به آن وابسته نکن |
+
+## نمونه Custom Agent
+
+```md
+---
+name: code-reviewer
+description: Reviews diffs against acceptance criteria, security and project conventions. Use after code changes.
+tools: Read, Grep, Glob, Bash
+---
+You are a strict reviewer. You never edit files.
+Check the diff against the task's acceptance criteria and project rules.
+Return: verdict (pass/fail), findings by severity with file and line, missing tests.
+Keep the report under 40 lines.
+```
+
+**Description** چیزی است که Delegation را فعال می‌کند: آن را مثل آگهی استخدام بنویس، همراه با اینکه کی باید استفاده شود.
+
+## تمرین
+
+1. `code-reviewer` را بساز و روی یک Diff کوچک اجرا کن.
+2. یک Agent فقط‌خواندنی `repo-explorer` بساز که نقشه ۱۰ خطی برگرداند.
+3. Plan Mode را روی یک تغییر چندفایلی اجرا کن و قبل از تأیید، برنامه را ویرایش کن.
+4. دو Worktree بساز و در هرکدام یک Session اجرا کن.
+
+## خودآزمایی
+
+کدام ابزارها را از Reviewer می‌گیری و چرا؟
+
+بعدی: [برگه مقایسه](../11-comparison-cheatsheet/)

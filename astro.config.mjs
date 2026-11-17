@@ -30,7 +30,12 @@ export default defineConfig({
           translations: { en: 'Day 2 · Context Engineering & Memory' },
           items: [{ autogenerate: { directory: 'day-2' } }],
         },
-        // Day 3..7: same pattern
+        {
+          label: 'روز ۳ · Planning، Delegation و Orchestration',
+          translations: { en: 'Day 3 · Planning, Delegation & Orchestration' },
+          items: [{ autogenerate: { directory: 'day-3' } }],
+        },
+        // Day 4..7: same pattern
       ],
     }),
   ],

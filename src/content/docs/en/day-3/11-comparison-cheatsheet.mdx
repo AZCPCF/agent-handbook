@@ -1,0 +1,52 @@
+---
+title: "11. Comparison Cheat-Sheet"
+description: Day 3 in tables.
+---
+
+## Single agent vs multi-agent
+
+| | Single agent | Multi-agent |
+|---|---|---|
+| Complexity | Low | High |
+| Cost | Lower | Higher |
+| Parallelism | None | Yes |
+| Independent review | Weak | Strong |
+| Use when | Most tasks | Parallel, noisy or high-risk work |
+
+## Patterns at a glance
+
+| Pattern | Use for | Risk |
+|---|---|---|
+| ReAct | Debugging, exploration | Wandering |
+| Plan-and-Execute | Features, refactors | Stale plan |
+| Orchestrator-workers | Multi-part features | Lead overload |
+| Pipeline | Repeatable roles | Rigid |
+| Generate-and-critique | Quality control | Endless loops |
+
+## Isolation mechanisms
+
+| Mechanism | Isolates | Does not isolate |
+|---|---|---|
+| Subagent | Context | Files, DB |
+| Worktree | Files and branch | DB, ports, services |
+| Permissions | Capabilities | Reasoning mistakes |
+| Sandbox | Execution environment | Logic errors |
+
+## Parallel or sequential?
+
+| Situation | Choice |
+|---|---|
+| Reading and research | Parallel |
+| Writes, different modules, interface agreed | Parallel |
+| Depends on another output | Sequential |
+| Same file or table | Sequential |
+
+## Roles
+
+| Role | Can edit? | Key output |
+|---|---|---|
+| Planner | No | Plan and criteria |
+| Coder | Yes (own worktree) | Commits |
+| Reviewer | No | Verdict and findings |
+
+Next: [Practical Exercise](../12-exercise/)

@@ -20,7 +20,7 @@ export const days: Day[] = [
     blurb: { fa: 'چه چیزی در دید مدل باشد، چه چیزی بیرون پنجره بماند.', en: 'What the model should see, and what must live outside the window.' },
   },
   {
-    n: 3, slug: 'day-3', first: '', pages: 0, status: 'soon',
+    n: 3, slug: 'day-3', first: '01-task-decomposition', pages: 12, status: 'ready',
     title: { fa: 'Planning، Delegation و Orchestration', en: 'Planning, Delegation & Orchestration' },
     blurb: { fa: 'تقسیم کار، Subagent و معماری چندعاملی.', en: 'Task decomposition, subagents and multi-agent design.' },
   },

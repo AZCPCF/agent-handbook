@@ -1,0 +1,40 @@
+---
+title: "۹. Planning Agent، Coding Agent، Reviewer Agent"
+description: تقسیم بر اساس نقش تا هر Agent کار محدود، مجوز محدود و دید مستقل داشته باشد.
+---
+
+## سه نقش کلاسیک
+
+| نقش | مسئولیت | مجوز | خروجی |
+|---|---|---|---|
+| **Planner** | کاوش، تقسیم تسک، پیشنهاد برنامه | فقط‌خواندنی | برنامه با تسک‌ها و معیارهای پذیرش |
+| **Coder** | پیاده‌سازی یک تسک | ویرایش فایل در Worktree خودش، اجرای تست | Commitها روی یک Branch |
+| **Reviewer** | بررسی Diff با معیارها | فقط‌خواندنی، می‌تواند تست اجرا کند | یافته‌ها، قبول یا رد |
+
+اختیاری: **Tester** (نوشتن تست)، **Security Reviewer**، **Docs Agent**.
+
+## چرا جدا کنیم؟
+
+- **Promptهای محدود** راحت‌تر درست می‌شوند.
+- **Least Privilege:** Reviewerی که نمی‌تواند ویرایش کند، بی‌صدا «درست» نمی‌کند.
+- **استقلال:** Reviewer در Context تازه، نقاط کور Coder را ندارد.
+
+## جریان
+
+```text
+Planner -> [you approve plan] -> Coder (per task) -> Tests/CI -> Reviewer -> [you merge]
+                                      ^                              |
+                                      +-------- fix findings <-------+
+```
+
+## نرده‌های ایمنی
+
+- **حلقه Coder-Reviewer** را محدود کن (مثلاً سه دور)، بعد Escalate به تو.
+- Reviewer **معیارهای پذیرش** را بگیرد، نه فقط Diff.
+- مالکیت انسان: تأیید برنامه، Migrationهای حساس، Merge.
+
+## خودآزمایی
+
+Prompt یک‌پاراگرافی برای یک Reviewer فقط‌خواندنی CRM بنویس.
+
+بعدی: [پیاده‌سازی در Claude Code](../10-claude-code-implementation/)

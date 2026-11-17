@@ -1,0 +1,40 @@
+---
+title: "9. Planning Agent, Coding Agent, Reviewer Agent"
+description: Splitting by role so each agent has a narrow job, narrow permissions and an independent view.
+---
+
+## The three classic roles
+
+| Role | Responsibility | Permissions | Output |
+|---|---|---|---|
+| **Planner** | Explore, decompose, propose a plan | Read-only | Plan with tasks and acceptance criteria |
+| **Coder** | Implement one task | Edit files in its worktree, run tests | Commits on a branch |
+| **Reviewer** | Check the diff against criteria | Read-only, can run tests | Findings, pass or fail |
+
+Optional: **Tester** (writes tests), **Security reviewer**, **Docs agent**.
+
+## Why separate them?
+
+- **Narrow prompts** are easier to get right.
+- **Least privilege:** a reviewer that cannot edit cannot "fix" things silently.
+- **Independence:** a reviewer in a fresh context does not share the coder's blind spots.
+
+## Flow
+
+```text
+Planner -> [you approve plan] -> Coder (per task) -> Tests/CI -> Reviewer -> [you merge]
+                                      ^                              |
+                                      +-------- fix findings <-------+
+```
+
+## Guardrails
+
+- Cap the **coder-reviewer loop** (for example three rounds), then escalate to you.
+- Reviewer gets the **acceptance criteria**, not only the diff.
+- Humans own: plan approval, sensitive migrations, merge.
+
+## Self-check
+
+Write the one-paragraph system prompt for a read-only reviewer for the CRM.
+
+Next: [Implementation in Claude Code](../10-claude-code-implementation/)

@@ -1,0 +1,42 @@
+---
+title: "4. Context Isolation"
+description: Using separate contexts to keep the main work clean, focused and safe.
+---
+
+## The idea
+
+Each subagent has a separate window. Its exploration noise stays there; only a distilled result flows back. This is Day 2's context engineering applied at the architecture level.
+
+```text
+Main context:  [goal][plan][summary A][summary B]   <- stays small
+Subagent A:    [brief][100 file reads][greps][...]   <- thrown away
+Subagent B:    [brief][test runs][logs][...]         <- thrown away
+```
+
+## Benefits and costs
+
+| Benefit | Cost |
+|---|---|
+| Main context stays clean | Information is lost at the boundary |
+| Specialised prompt per role | Duplicate reading across agents |
+| Per-agent permissions | More total tokens |
+| Parallel work is possible | Summaries can be wrong or vague |
+
+## The return contract
+
+Ask for results shaped for the lead's next decision:
+
+- A **short answer** first
+- **Evidence** as file paths and line references, not pasted code dumps
+- **Open questions** and risks
+- A hard **length limit**
+
+:::caution
+Never accept "it works" from a subagent as proof. Verify with tests or a second look.
+:::
+
+## Self-check
+
+What would you ask a code-search subagent to return, in at most 10 lines?
+
+Next: [Multi-Agent Orchestration](../05-multi-agent-orchestration/)
