@@ -1,0 +1,49 @@
+---
+title: "10. CLI & Headless Execution"
+description: Running the agent non-interactively from scripts and CI.
+---
+
+## Why headless?
+
+Interactive chat is for exploration. **Headless** runs the agent as a command: one prompt in, result out. That makes agents scriptable, schedulable and testable.
+
+## Typical uses
+
+| Use | Example |
+|---|---|
+| PR review in CI | Review the diff and post findings |
+| Batch tasks | Update docs across many files |
+| Scheduled checks | Nightly dependency or TODO report |
+| Evaluation | Run the same task set to compare setups (Day 6) |
+
+## Shape of a headless call
+
+```bash
+# one-shot prompt, machine-readable output
+claude -p "Review the staged diff against our rules and list problems" \
+  --output-format json \
+  --max-turns 8 \
+  --allowedTools "Read,Grep,Glob"
+```
+
+:::note
+Flag names can change between versions. Verify them with `claude --help` and the CLI docs.
+:::
+
+## Safety in headless mode
+
+1. **Allow-list tools** explicitly; there is no human to click approve.
+2. **Limit turns and budget** to stop runaways.
+3. **Read-only by default**; grant writes narrowly.
+4. **Sandbox and no production credentials** in CI.
+5. **Treat output as untrusted** before using it in scripts.
+
+## Parsing results
+
+Request structured output and check the status field and the result text; fail the job on errors instead of assuming success.
+
+## Self-check
+
+Design a CI step that runs a read-only review on every PR. What tools do you allow?
+
+Next: [Integrations & Tool Failure Handling](../11-integrations-failure/)

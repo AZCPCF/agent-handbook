@@ -1,0 +1,66 @@
+---
+title: "12. Implementation in Claude Code"
+description: Hooks, MCP configuration, skills, subagents, plugins and headless mode in practice.
+---
+
+:::note
+Configuration formats change. Treat these as patterns and confirm the exact schema in the official docs.
+:::
+
+## Where things live
+
+| Capability | Typical location |
+|---|---|
+| Hooks | `settings.json` (`.claude/settings.json` for the project) |
+| MCP servers | Project MCP config file or the CLI's `mcp` commands |
+| Skills | `.claude/skills/<name>/SKILL.md` |
+| Subagents | `.claude/agents/<name>.md` |
+| Plugins | Installed from a marketplace or local path |
+| Headless | `claude -p ...` |
+
+## Hook configuration pattern
+
+```json
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          { "type": "command", "command": ".claude/hooks/ts-check.sh" }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          { "type": "command", "command": ".claude/hooks/protect-paths.sh" }
+        ]
+      }
+    ]
+  }
+}
+```
+
+## MCP configuration pattern
+
+```json
+{
+  "mcpServers": {
+    "crm-docs": { "type": "http", "url": "https://example.com/mcp" }
+  }
+}
+```
+
+## Practice
+
+1. Add the hook from the exercise and trigger it with a deliberate type error.
+2. Connect one read-only MCP server and compare `/context` before and after.
+3. Run one headless read-only review on a local diff.
+
+## Self-check
+
+Which of these files belong in git, and which must never be committed?
+
+Next: [Comparison Cheat-Sheet](../13-comparison-cheatsheet/)

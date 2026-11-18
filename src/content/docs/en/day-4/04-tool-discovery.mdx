@@ -1,0 +1,34 @@
+---
+title: "4. Tool Discovery"
+description: How an agent learns which tools exist without drowning its context.
+---
+
+## The problem
+
+Loading every tool definition upfront is simple but **expensive**. With dozens of tools, definitions can consume a large part of the window before any work starts.
+
+## Discovery strategies
+
+| Strategy | How it works | Trade-off |
+|---|---|---|
+| **Load all upfront** | Every tool visible every turn | Simple, costly, confusing at scale |
+| **Scoped sets** | Different tool sets per agent or task | Needs planning, very effective |
+| **Search / deferred loading** | Agent searches a catalog and loads only what it needs | Saves context, adds a lookup step |
+| **Progressive disclosure** | Names first, details on demand | Same idea as skills (Day 2) |
+
+## Good practice
+
+1. **Scope by role:** the reviewer subagent gets read tools only.
+2. **Disable unused servers** per project or session.
+3. **Name and describe for search:** include the words someone would use.
+4. **Group by domain** so related tools are found together.
+
+## Check the cost
+
+Look at your baseline context before and after connecting a server (`/context` in Claude Code). If a server costs a lot and you rarely use it, scope it down.
+
+## Self-check
+
+Which of your tools should every agent see, and which only one specific subagent?
+
+Next: [Tool Schema & Validation](../05-schema-validation/)

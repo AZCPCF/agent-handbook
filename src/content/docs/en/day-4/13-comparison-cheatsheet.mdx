@@ -1,0 +1,52 @@
+---
+title: "13. Comparison Cheat-Sheet"
+description: Day 4 in tables.
+---
+
+## Which extension mechanism?
+
+| Need | Mechanism | Deterministic? |
+|---|---|---|
+| Call an external system with arguments | MCP tool | Tool is, choice is the model's |
+| Read reference data on demand | MCP resource | Yes |
+| Repeatable user-triggered template | MCP prompt / command | Yes |
+| Follow a procedure with judgment | Skill | No |
+| Always do X after Y | Hook | Yes |
+| Specialised worker with own context | Subagent | No |
+| Share all of the above | Plugin | n/a |
+| Run in CI or scripts | Headless | Depends on prompt |
+
+## Prompt rule vs hook
+
+| | Prompt | Hook |
+|---|---|---|
+| Guarantee | None | Strong |
+| Flexibility | High | Low |
+| Use for | Preferences | Invariants |
+
+## MCP primitives
+
+| Primitive | Controlled by | Use |
+|---|---|---|
+| Tool | Model | Actions |
+| Resource | Application | Reference data |
+| Prompt | User | Templates |
+
+## Discovery strategies
+
+| Strategy | Context cost | Complexity |
+|---|---|---|
+| All upfront | High | Low |
+| Scoped per agent | Low | Medium |
+| Search / deferred | Lowest | Higher |
+
+## Failure responses
+
+| Failure | Response |
+|---|---|
+| Transient | Retry in tool |
+| Invalid args | Actionable error |
+| Denied | Stop and ask |
+| Repeated | Circuit breaker, escalate |
+
+Next: [Practical Exercise](../14-exercise/)

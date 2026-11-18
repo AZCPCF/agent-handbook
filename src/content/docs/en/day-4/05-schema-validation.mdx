@@ -1,0 +1,58 @@
+---
+title: "5. Tool Schema & Validation"
+description: Making invalid input impossible or at least cheap to detect.
+---
+
+## Two layers
+
+1. **Schema in the definition** tells the model what is valid.
+2. **Validation in the implementation** enforces it, because the model can still be wrong.
+
+Never trust model-produced arguments. Treat them like user input from the internet.
+
+## Schema checklist
+
+| Technique | Example |
+|---|---|
+| Required vs optional | Only truly optional fields are optional |
+| Enums | `status: "open" or "closed"` instead of free text |
+| Bounds | `limit` between 1 and 50 |
+| Formats | Dates as ISO strings, IDs with a pattern |
+| Descriptions and examples | Say what each field means |
+| Defaults | Safe defaults, documented |
+
+## Validate in code
+
+```ts
+import { z } from 'zod';
+
+const SearchCustomers = z.object({
+  query: z.string().min(2),
+  limit: z.number().int().min(1).max(50).default(10),
+});
+
+export function searchCustomers(raw: unknown) {
+  const parsed = SearchCustomers.safeParse(raw);
+  if (!parsed.success) {
+    return { ok: false, error: 'INVALID_INPUT', details: parsed.error.issues.map(i => i.message) };
+  }
+  // ... safe to use parsed.data
+}
+```
+
+## Errors the model can act on
+
+| Weak | Strong |
+|---|---|
+| `Invalid input` | `limit must be between 1 and 50, got 500` |
+| Stack trace | Short message plus a suggested fix |
+
+## Also validate outputs
+
+Limit size, strip secrets and sensitive fields, and keep a stable shape.
+
+## Self-check
+
+Write a schema and a validation error message for `update_customer_status`.
+
+Next: [Hooks & Event-driven Automation](../06-hooks/)

@@ -35,7 +35,12 @@ export default defineConfig({
           translations: { en: 'Day 3 · Planning, Delegation & Orchestration' },
           items: [{ autogenerate: { directory: 'day-3' } }],
         },
-        // Day 4..7: same pattern
+        {
+          label: 'روز ۴ · Tooling و Extensibility',
+          translations: { en: 'Day 4 · Tooling & Extensibility' },
+          items: [{ autogenerate: { directory: 'day-4' } }],
+        },
+        // Day 5..7: same pattern
       ],
     }),
   ],

@@ -1,0 +1,39 @@
+---
+title: "7. Lifecycle Events"
+description: The points in a session where you can attach automation.
+---
+
+:::note
+Event names and capabilities evolve. The table shows the typical set in Claude Code; confirm exact names in the Hooks reference.
+:::
+
+## Typical events
+
+| Event | Fires | Typical use | Can block? |
+|---|---|---|---|
+| **SessionStart** | Session begins or resumes | Inject branch, ticket, environment | No |
+| **UserPromptSubmit** | You send a prompt | Add context, screen prompts | Yes |
+| **PreToolUse** | Before a tool runs | Protect files, deny dangerous commands | Yes |
+| **PostToolUse** | After a tool succeeds | Format, typecheck, lint, log | Feedback to agent |
+| **Notification** | Agent needs attention | Desktop or chat alert | No |
+| **Stop** | Agent finishes a turn | Final checks, verify tests passed | Can force continuation |
+| **SubagentStop** | A subagent finishes | Validate its result | Can force continuation |
+| **PreCompact** | Before compaction | Save critical notes | No |
+
+## Matchers
+
+Most tool events let you **match** on the tool name (for example edit and write tools), so a hook runs only when relevant.
+
+## Design rules
+
+1. **Fast:** hooks run inline; slow hooks slow every step.
+2. **Narrow matchers:** do not run the full test suite after every edit; run the cheap check.
+3. **Quiet on success:** print only when something is wrong.
+4. **Idempotent and safe:** a hook may run many times.
+5. **Fail clearly:** an actionable message the agent can act on.
+
+## Self-check
+
+Which event would you use to guarantee tests were run before the agent says "done"?
+
+Next: [Skills & Reusable Workflows](../08-skills-workflows/)

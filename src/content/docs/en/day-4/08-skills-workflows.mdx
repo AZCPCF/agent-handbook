@@ -1,0 +1,40 @@
+---
+title: "8. Skills & Reusable Workflows"
+description: Packaging your best procedure so every session follows it.
+---
+
+You know the format (Day 2: progressive disclosure). Today is about **designing workflows worth packaging**.
+
+## What deserves a skill
+
+- You explain it to the agent **more than twice**
+- It has **ordered steps** and a definition of done
+- Mistakes are costly (bug fix, migration review, release)
+
+## Anatomy of a good workflow skill
+
+| Part | Content |
+|---|---|
+| **Trigger description** | When to use it, in your own words |
+| **Steps** | Short, ordered, verifiable |
+| **Deterministic parts as scripts** | Tests, lint, data checks are code, not prose |
+| **Guardrails** | What it must not do, when to ask you |
+| **Output format** | What the final report contains |
+
+## Skill, hook or command?
+
+| Need | Use |
+|---|---|
+| Procedure the model should follow with judgment | Skill |
+| Must happen every time, no judgment | Hook |
+| You trigger it explicitly | Command or prompt template |
+
+## Test your skills
+
+Run the same three tasks with and without the skill. If results do not improve, simplify or delete it. A skill is code: **review, version and prune** it.
+
+## Self-check
+
+List three recurring tasks in your CRM project worth turning into skills.
+
+Next: [Plugins & Extension Architecture](../09-plugins/)

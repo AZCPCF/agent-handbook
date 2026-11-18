@@ -1,0 +1,78 @@
+---
+title: "۱۴. تمرین عملی — Hook و Skill"
+description: یک Hook کیفیت TypeScript و یک Skill بررسی و رفع باگ بساز.
+---
+
+## بخش الف: Hook بررسی TypeScript بعد از ویرایش
+
+هدف: بعد از اینکه Agent یک فایل `.ts` یا `.tsx` را ویرایش کرد، Typecheck و Lint اجرا شود. در صورت شکست، پیام کوتاهی به Agent برگردد.
+
+فایل `.claude/hooks/ts-check.sh`:
+
+```bash
+#!/usr/bin/env bash
+set -uo pipefail
+
+input=$(cat)
+file=$(echo "$input" | jq -r '.tool_input.file_path // empty')
+
+case "$file" in
+  *.ts|*.tsx) ;;
+  *) exit 0 ;;
+esac
+
+out=$(pnpm exec tsc --noEmit 2>&1 | head -30)
+if [ -n "$out" ]; then
+  echo "Typecheck failed after editing $file:" >&2
+  echo "$out" >&2
+  exit 2   # blocking feedback to the agent
+fi
+
+lint=$(pnpm exec eslint "$file" 2>&1 | head -30)
+if [ $? -ne 0 ] && [ -n "$lint" ]; then
+  echo "$lint" >&2
+  exit 2
+fi
+exit 0
+```
+
+فایل را اجرایی کن (`chmod +x`)، زیر `PostToolUse` با Matcher ویرایش/نوشتن ثبتش کن (صفحه ۱۲) و با یک خطای عمدی Type تست کن.
+
+:::caution
+قالب دقیق ورودی و رفتار Exit Code را در مرجع Hooks تأیید کن؛ اگر فرق داشت اسکریپت را تطبیق بده.
+:::
+
+**چالش اضافه:** یک Hook از نوع `PreToolUse` بنویس که ویرایش فایل‌های موجود در `migrations/` را رد کند.
+
+## بخش ب: Skill بررسی و رفع باگ
+
+فایل `.claude/skills/bug-triage-fix/SKILL.md`:
+
+```md
+---
+name: bug-triage-fix
+description: Investigate and fix a reported bug, test first. Use when the user reports a bug, regression or failing test.
+---
+# Bug triage and fix
+1. Restate the bug and the expected behaviour in two sentences.
+2. Locate the relevant code by searching; do not guess.
+3. Write a failing test that reproduces the bug. Run it and confirm it fails for the right reason.
+4. Make the smallest fix. Do not refactor unrelated code.
+5. Run tests, typecheck and lint.
+6. Report: root cause, files changed, tests added, remaining risks.
+
+## Rules
+- Never edit existing migrations; ask first.
+- If the cause is unclear after three attempts, stop and report what you know.
+```
+
+## خروجی
+
+یک مجموعه ابزار قابل‌استفاده مجدد: اسکریپت Hook، ورودی `settings`، و Skill، همراه با یک `README` کوتاه که توضیح می‌دهد هرکدام کی اجرا می‌شوند.
+
+## وقتی تمام است که
+
+- [ ] خطای Type بلافاصله بعد از ویرایش پیدا و گزارش می‌شود
+- [ ] ویرایش‌های سالم هیچ خروجی ندارند
+- [ ] Skill با گزارش باگ فعال می‌شود و گام‌ها را دنبال می‌کند
+- [ ] هیچ‌چیز در این مجموعه بیش از نیازش دسترسی ندارد

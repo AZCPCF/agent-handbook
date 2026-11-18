@@ -1,0 +1,43 @@
+---
+title: "2. MCP at an Advanced Level"
+description: Architecture, transports, scopes, trust and the real cost of connecting servers.
+---
+
+You already know what MCP is. Here is what matters when you rely on it for a real project.
+
+## Architecture
+
+```text
+Host app (Claude Code) -> MCP client -> MCP server -> external system (DB, API, SaaS)
+```
+
+A **server** exposes capabilities; the **client** inside the host connects to it; the **model** only sees what the host chooses to expose.
+
+## Decisions you must make
+
+| Decision | Options | Guidance |
+|---|---|---|
+| **Transport** | Local process (stdio) or remote HTTP | Local for dev tools, remote for shared services |
+| **Scope** | User, project (shared in repo), local | Share team-safe servers via the project config |
+| **Auth** | Tokens, OAuth | Least-privilege credentials, never in the repo |
+| **Trust** | Who wrote the server? | Treat third-party servers as untrusted code |
+| **Environment** | Dev, staging, production | **Never connect production data to an agent without a gate** |
+
+## Costs and risks
+
+- Each server's tool list consumes **context** on every turn.
+- Servers can return **untrusted content** (prompt injection path, Day 5).
+- A server with write access is a **permission** you grant, not a convenience.
+
+## Operating rules for the CRM project
+
+1. Only read-only database access, against staging or sanitized data.
+2. Pin server versions and review what each tool can do.
+3. Disable servers you are not using in this task.
+4. Log tool calls.
+
+## Self-check
+
+Which MCP servers would you allow for the CRM project, with which permissions?
+
+Next: [Tools, Resources and Prompts](../03-mcp-primitives/)

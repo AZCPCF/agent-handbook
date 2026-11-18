@@ -1,0 +1,78 @@
+---
+title: "14. Practical Exercise — Hook and Skill"
+description: Build a TypeScript quality hook and a bug triage and fix skill.
+---
+
+## Part A: a hook that checks TypeScript after edits
+
+Goal: after the agent edits a `.ts` or `.tsx` file, run typecheck and lint. On failure, send a short message back to the agent.
+
+`.claude/hooks/ts-check.sh`:
+
+```bash
+#!/usr/bin/env bash
+set -uo pipefail
+
+input=$(cat)
+file=$(echo "$input" | jq -r '.tool_input.file_path // empty')
+
+case "$file" in
+  *.ts|*.tsx) ;;
+  *) exit 0 ;;
+esac
+
+out=$(pnpm exec tsc --noEmit 2>&1 | head -30)
+if [ -n "$out" ]; then
+  echo "Typecheck failed after editing $file:" >&2
+  echo "$out" >&2
+  exit 2   # blocking feedback to the agent
+fi
+
+lint=$(pnpm exec eslint "$file" 2>&1 | head -30)
+if [ $? -ne 0 ] && [ -n "$lint" ]; then
+  echo "$lint" >&2
+  exit 2
+fi
+exit 0
+```
+
+Make it executable (`chmod +x`), register it under `PostToolUse` with an edit/write matcher (see page 12), and test with a deliberate type error.
+
+:::caution
+Confirm the exact input format and exit-code behaviour in the Hooks reference; adapt the script if they differ.
+:::
+
+**Stretch:** add a `PreToolUse` hook that refuses edits to existing files in `migrations/`.
+
+## Part B: a bug triage and fix skill
+
+`.claude/skills/bug-triage-fix/SKILL.md`:
+
+```md
+---
+name: bug-triage-fix
+description: Investigate and fix a reported bug, test first. Use when the user reports a bug, regression or failing test.
+---
+# Bug triage and fix
+1. Restate the bug and the expected behaviour in two sentences.
+2. Locate the relevant code by searching; do not guess.
+3. Write a failing test that reproduces the bug. Run it and confirm it fails for the right reason.
+4. Make the smallest fix. Do not refactor unrelated code.
+5. Run tests, typecheck and lint.
+6. Report: root cause, files changed, tests added, remaining risks.
+
+## Rules
+- Never edit existing migrations; ask first.
+- If the cause is unclear after three attempts, stop and report what you know.
+```
+
+## Deliverable
+
+A reusable toolset: the hook script, its settings entry, and the skill, plus a short `README` explaining when each fires.
+
+## Done when
+
+- [ ] A type error is caught and reported right after an edit
+- [ ] Clean edits produce no output
+- [ ] The skill triggers on a bug report and follows the steps
+- [ ] Nothing in the toolset has more access than it needs

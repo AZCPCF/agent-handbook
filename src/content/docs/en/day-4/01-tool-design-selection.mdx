@@ -1,0 +1,42 @@
+---
+title: "1. Tool Design & Tool Selection"
+description: Building a small, sharp tool set the agent can choose from correctly.
+---
+
+Day 1 covered a single tool's contract. Today the question is the **whole portfolio**: which tools exist, and how does the agent pick the right one?
+
+## More tools is not better
+
+Every tool definition costs context, and similar tools confuse the model. Selection errors rise with the number of overlapping options.
+
+| Principle | In practice |
+|---|---|
+| **Fewer, more capable tools** | One `search_customers` with filters beats five near-duplicates |
+| **Clear, distinct purposes** | If you cannot say how two tools differ, merge them |
+| **Namespacing** | Prefix by domain or service: `crm_search_customers`, `crm_update_customer` |
+| **Task-shaped, not API-shaped** | Wrap a workflow ("schedule_followup"), not every low-level endpoint |
+| **Token-efficient output** | Return identifiers and summaries; allow a detail flag |
+| **Meaningful names in results** | Return `customer_name`, not opaque IDs only |
+
+## Choosing between a tool, a script and a skill
+
+| Need | Best fit |
+|---|---|
+| Model must call it dynamically with arguments | Tool (often via MCP) |
+| Fixed deterministic procedure | Script the agent runs (or a hook) |
+| Know-how and steps in prose | Skill |
+| Always true rule | Project instructions |
+
+## Evaluate your tools
+
+Write 10 to 20 realistic tasks, run the agent, and read the **transcripts**: wrong tool picked? wrong arguments? wasted calls? Rename, merge or re-describe, then re-run.
+
+:::tip
+Descriptions are prompts. Edit them like prompts, and test them.
+:::
+
+## Self-check
+
+You have `get_user`, `fetch_user`, `find_user`, `lookup_user`. How do you redesign them?
+
+Next: [MCP Architecture](../02-mcp-architecture/)

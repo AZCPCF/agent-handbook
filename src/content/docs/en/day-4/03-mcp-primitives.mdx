@@ -1,0 +1,36 @@
+---
+title: "3. MCP Tools, Resources & Prompts"
+description: The three primitives, who controls each, and when to use which.
+---
+
+## The three primitives
+
+| Primitive | Controlled by | What it is | Example |
+|---|---|---|---|
+| **Tools** | The **model** | Actions the model can invoke | `create_ticket`, `run_query` |
+| **Resources** | The **application** | Readable data identified by a URI | A schema file, a doc page |
+| **Prompts** | The **user** | Reusable templates the user triggers | "Review this PR" template |
+
+## Choosing
+
+| If you need... | Use |
+|---|---|
+| The agent to act or compute | Tool |
+| The agent to read stable reference data | Resource |
+| A repeatable, user-triggered workflow | Prompt (or a skill) |
+
+## Design tips
+
+- Prefer **resources** for large read-only reference data so the agent loads them on demand (just-in-time, Day 2).
+- Keep **tools** for operations; a read-only tool is fine but treat it as a tool for permission purposes.
+- Use **prompts** when a human should decide when to run the workflow.
+
+:::note
+Client support for resources and prompts varies between hosts. Check what your client actually surfaces before designing around them.
+:::
+
+## Self-check
+
+Classify: "list invoices", "the data dictionary", "weekly report generator".
+
+Next: [Tool Discovery](../04-tool-discovery/)

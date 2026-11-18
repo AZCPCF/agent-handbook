@@ -1,0 +1,42 @@
+---
+title: "6. Hooks & Event-driven Automation"
+description: Deterministic code that runs at fixed points in the agent loop.
+---
+
+## Why hooks?
+
+A prompt says "please run the tests". A **hook runs the tests, every time**. Hooks move critical behaviour out of the model's discretion and into deterministic code.
+
+| | Instruction in a prompt | Hook |
+|---|---|---|
+| Reliability | Usually followed | Always executed |
+| Can block an action | No | Yes |
+| Cost | Tokens each turn | None unless it outputs |
+| Best for | Guidance | Guardrails and automation |
+
+## Typical uses
+
+| Use | Example |
+|---|---|
+| **Quality gate** | Run typecheck and lint after every TypeScript edit |
+| **Protection** | Block edits to existing migrations or `.env` |
+| **Formatting** | Run the formatter after file writes |
+| **Audit** | Log every shell command |
+| **Context injection** | Add branch or ticket info at session start |
+| **Notification** | Ping you when the agent needs input |
+
+## How a hook talks to the agent
+
+- Receives **event data** (tool name, arguments) as input.
+- Returns an **exit status**; a special status can **block** and send its message back to the agent as feedback.
+- Hook output becomes agent-visible, so **keep it short**.
+
+:::caution
+Hooks run **with your permissions**. A careless hook is a security hole. Review them like production scripts.
+:::
+
+## Self-check
+
+Which three rules in your CRM project are better as hooks than as instructions?
+
+Next: [Lifecycle Events](../07-lifecycle-events/)

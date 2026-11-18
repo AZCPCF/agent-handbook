@@ -1,0 +1,39 @@
+---
+title: "11. External APIs, Integrations & Tool Failure Handling"
+description: Connecting to the outside world and staying in control when it misbehaves.
+---
+
+## Integration principles
+
+| Principle | Why |
+|---|---|
+| **Wrap, do not expose** | Give the agent a safe, task-shaped tool, not the raw API |
+| **Least privilege credentials** | Read-only keys where possible |
+| **Staging first** | Real data and production stay behind a human gate |
+| **Secrets outside context** | Use environment variables or a secret manager |
+| **Rate-limit awareness** | The tool, not the model, handles backoff |
+
+## Failure handling at the agent level
+
+Day 1 covered retries and idempotency inside a tool. Now the question is **what the agent and harness do when a tool keeps failing**.
+
+| Failure | Right response |
+|---|---|
+| Transient (timeout, 503) | Tool retries with backoff; agent sees one clean result |
+| Bad arguments | Return an actionable error; agent corrects |
+| Permission denied | Stop and ask you; do not look for a workaround |
+| Tool down | Report it; do not invent data |
+| Repeated failure | Circuit breaker: stop after N failures, summarise, escalate |
+
+## Rules to put in instructions and code
+
+1. **Never fabricate** a result when a tool fails; say it failed.
+2. **Do not bypass** a permission block with another tool.
+3. **Cap retries** per tool and per task.
+4. **Surface** failures in the final report.
+
+## Self-check
+
+The staging database tool times out three times. What should the agent do next?
+
+Next: [Implementation in Claude Code](../12-claude-code-implementation/)

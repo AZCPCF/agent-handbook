@@ -1,0 +1,66 @@
+---
+title: "۱۲. پیاده‌سازی در Claude Code"
+description: Hooks، پیکربندی MCP، Skills، Subagents، Plugins و حالت Headless در عمل.
+---
+
+:::note
+قالب پیکربندی‌ها تغییر می‌کند. این‌ها را الگو بدان و Schema دقیق را در مستندات رسمی تأیید کن.
+:::
+
+## هر چیز کجا زندگی می‌کند
+
+| قابلیت | محل معمول |
+|---|---|
+| Hooks | `settings.json` (`.claude/settings.json` برای پروژه) |
+| سرورهای MCP | فایل Config MCP پروژه یا دستورهای `mcp` در CLI |
+| Skills | `.claude/skills/<name>/SKILL.md` |
+| Subagents | `.claude/agents/<name>.md` |
+| Plugins | نصب از Marketplace یا مسیر محلی |
+| Headless | `claude -p ...` |
+
+## الگوی پیکربندی Hook
+
+```json
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          { "type": "command", "command": ".claude/hooks/ts-check.sh" }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          { "type": "command", "command": ".claude/hooks/protect-paths.sh" }
+        ]
+      }
+    ]
+  }
+}
+```
+
+## الگوی پیکربندی MCP
+
+```json
+{
+  "mcpServers": {
+    "crm-docs": { "type": "http", "url": "https://example.com/mcp" }
+  }
+}
+```
+
+## تمرین
+
+1. Hook تمرین را اضافه کن و با یک خطای عمدی Type آن را فعال کن.
+2. یک سرور MCP فقط‌خواندنی وصل کن و `/context` را قبل و بعد مقایسه کن.
+3. یک بازبینی Headless فقط‌خواندنی روی یک Diff محلی اجرا کن.
+
+## خودآزمایی
+
+کدام یک از این فایل‌ها داخل Git می‌روند و کدام هرگز نباید Commit شوند؟
+
+بعدی: [برگه مقایسه](../13-comparison-cheatsheet/)

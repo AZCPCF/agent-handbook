@@ -1,0 +1,58 @@
+---
+title: "۵. Tool Schema و Validation"
+description: ورودی نامعتبر را ناممکن یا دست‌کم ارزان برای تشخیص کنیم.
+---
+
+## دو لایه
+
+1. **Schema در تعریف** به مدل می‌گوید چه چیزی معتبر است.
+2. **Validation در پیاده‌سازی** آن را اعمال می‌کند، چون مدل هنوز می‌تواند اشتباه کند.
+
+هرگز به آرگومان‌های تولیدشده توسط مدل اعتماد نکن. مثل ورودی کاربر از اینترنت با آن‌ها رفتار کن.
+
+## چک‌لیست Schema
+
+| تکنیک | مثال |
+|---|---|
+| Required در برابر Optional | فقط فیلدهای واقعاً اختیاری Optional باشند |
+| Enum | `status: "open" or "closed"` به‌جای متن آزاد |
+| محدوده | `limit` بین ۱ و ۵۰ |
+| قالب | تاریخ به‌صورت رشته ISO، شناسه با الگو |
+| توضیح و مثال | بگو هر فیلد چه معنایی دارد |
+| پیش‌فرض | پیش‌فرض امن و مستند |
+
+## Validation در کد
+
+```ts
+import { z } from 'zod';
+
+const SearchCustomers = z.object({
+  query: z.string().min(2),
+  limit: z.number().int().min(1).max(50).default(10),
+});
+
+export function searchCustomers(raw: unknown) {
+  const parsed = SearchCustomers.safeParse(raw);
+  if (!parsed.success) {
+    return { ok: false, error: 'INVALID_INPUT', details: parsed.error.issues.map(i => i.message) };
+  }
+  // ... safe to use parsed.data
+}
+```
+
+## خطاهایی که مدل بتواند رویشان اقدام کند
+
+| ضعیف | قوی |
+|---|---|
+| `Invalid input` | `limit must be between 1 and 50, got 500` |
+| Stack trace | پیام کوتاه به‌علاوه پیشنهاد رفع |
+
+## خروجی را هم اعتبارسنجی کن
+
+اندازه را محدود کن، Secretها و فیلدهای حساس را حذف کن و شکل را ثابت نگه دار.
+
+## خودآزمایی
+
+برای `update_customer_status` یک Schema و پیام خطای Validation بنویس.
+
+بعدی: [Hooks و اتوماسیون رویدادمحور](../06-hooks/)

@@ -1,0 +1,42 @@
+---
+title: "9. Plugins & Extension Architecture"
+description: Bundling skills, agents, hooks and servers so a team can install them as one unit.
+---
+
+## What a plugin bundles
+
+| Component | Example |
+|---|---|
+| Skills | `bug-triage-fix`, `release-checklist` |
+| Custom agents | `code-reviewer`, `repo-explorer` |
+| Hooks | Typecheck after edits, protect migrations |
+| MCP servers | Staging database, issue tracker |
+| Commands | Shortcuts for common prompts |
+
+## Why bundle
+
+- **One install** gives every developer the same harness.
+- **Versioning** and changelog for your agent setup.
+- **Sharing** across projects (or publishing).
+
+## Extension architecture principles
+
+1. **Single responsibility** per extension.
+2. **Explicit dependencies** between components.
+3. **Least privilege:** each component declares what it needs.
+4. **Compatibility:** pin versions; test after tool updates.
+5. **Governance:** review third-party plugins like dependencies, because they can run code and shape the agent's behaviour.
+
+:::caution
+A plugin can ship hooks and servers that execute with your permissions. Install only what you have read.
+:::
+
+## For a three-month project
+
+Start with plain project files (`.claude/`). Package as a plugin **later**, when you want to reuse the setup across projects.
+
+## Self-check
+
+What would you put in a "crm-engineering" plugin, and what would stay project-local?
+
+Next: [CLI & Headless Execution](../10-cli-headless/)

@@ -25,7 +25,7 @@ export const days: Day[] = [
     blurb: { fa: 'تقسیم کار، Subagent و معماری چندعاملی.', en: 'Task decomposition, subagents and multi-agent design.' },
   },
   {
-    n: 4, slug: 'day-4', first: '', pages: 0, status: 'soon',
+    n: 4, slug: 'day-4', first: '01-tool-design-selection', pages: 14, status: 'ready',
     title: { fa: 'Tooling و Extensibility', en: 'Tooling & Extensibility' },
     blurb: { fa: 'Hooks، MCP، Skills و اتوماسیون.', en: 'Hooks, MCP, skills and automation.' },
   },
